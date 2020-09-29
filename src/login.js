@@ -2,13 +2,14 @@ import React from 'react';
 import {GoogleLogin} from 'react-google-login';
 import {cliendId} from './configs';
 
-export default function Login() {
+export default function Login(props) {
     const onSuccess = (res) => {
-        console.log("Login successful. Current user: ", res.profileObj);
+        const profile = res.profileObj;
+        props.success(profile.name, profile.email);
     }
 
     const onFailure = (res) => {
-        console.log("Login failed. Response: ", res);
+        alert("Autentificarea nu a reuşit. Încearcă din nou");
     }
 
     return (

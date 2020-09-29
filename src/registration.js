@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Grid from '@material-ui/core/Grid';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import Login from './login';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -208,13 +209,46 @@ export default class Registration extends React.Component {
         }
     }
 
+    registerMember = (name, email) => {
+        //we have: activity_id, activity_name in this.state.activity
+        //we need email and the name of the participant
+        //we will make a POST request to https://api.amosed.ro/api/users
+
+
+        let body = {
+            name: name,
+            email: email,
+            activity_id: parseInt(this.activity_id),
+            activity_name: this.state.activity.activity_name,
+            member: 1,
+            gdpr: 1,
+            activity_time: parseInt(this.state.activity.duration)
+        }
+        
+        fetch("https://api.amosed.ro/api/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+            cors: 'cors'
+        })
+        .then(response=>response.json())
+        .then(json => {
+            this.setState({ registered: true });
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    }
+
     GoogleLogin = () => {
         if (this.state.member) {
             return (
                 <div>
                     <h3 style={{ textAlign: 'center' }}>Loghează-te cu contul tău de G Suite pentru a te înscrie la activitate</h3>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <GoogleBtn />
+                        <Login success={this.registerMember} />
                     </div>
                 </div>
             )
@@ -232,6 +266,8 @@ export default class Registration extends React.Component {
             </div>
         )
     }
+
+    
 
     MainScreen = () => {
         const classes = useStyles();
@@ -296,22 +332,11 @@ export default class Registration extends React.Component {
                     {!this.state.registered && (
                         <div>
                             <h1 style={{ textAlign: 'center' }}>Înscrie-te la activitate!</h1>
-                            <p style={{ textAlign: 'center' }}>Pentru a te putea înregistra la {this.state.activity ? this.state.activity.activity_name : "această activitate"}, urmează paşii de mai jos</p>
+                            {!this.state.member && (
+                                <p style={{ textAlign: 'center' }}>Pentru a te putea înregistra la {this.state.activity ? this.state.activity.activity_name : "această activitate"}, urmează paşii de mai jos</p>
+                            )}
                         </div>
                     )}
-
-                    {/* <FormControlLabel
-                    style={{ marginTop: '2%' }}
-                    control={
-                        <Checkbox
-                            checked={member}
-                            onChange={handleMemberChange}
-                            name="member"
-                            color="primary"
-                        />
-                    }
-                    label="Moseador?"
-                /> */}
 
                     <this.MainScreen />
 
