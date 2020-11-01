@@ -11,6 +11,8 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Grid from '@material-ui/core/Grid';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Login from './login';
+import logoComplet from './img/logo-complet.png';
+import logoSimpl from './img/Logo AMoS ED simplu.svg';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +74,7 @@ export default class Registration extends React.Component {
     }
 
     getParams = () => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const { activity_id } = useParams();
         return activity_id;
     }
@@ -164,6 +167,14 @@ export default class Registration extends React.Component {
             .catch(error => console.error(error));
     }
 
+    LabelComponent = () => {
+        return (
+            <p>
+                Sunt de acord cu <a href={"https://www.amosed.ro/wp-content/uploads/2020/11/GDPR-Doc_.docx.pdf"} target={"_blank"}>politica de confidențialitate cu privire la prelucrarea datelor cu caracter personal</a>
+            </p>
+        )
+    }
+
     GeneralForm = (classes) => {
         if (!this.state.member) {
             return (
@@ -190,7 +201,7 @@ export default class Registration extends React.Component {
                                     color="primary"
                                 />
                             }
-                            label="Sunt de acord cu politica de prelucrare a datelor a AMoS ED"
+                            label={<this.LabelComponent />}
                         />
 
                         <div>
@@ -270,6 +281,7 @@ export default class Registration extends React.Component {
     
 
     MainScreen = () => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const classes = useStyles();
         if (this.state.registered) {
             return <this.SuccessScreen />
@@ -326,7 +338,8 @@ export default class Registration extends React.Component {
                         </IconButton>
                     )}
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <img src={require('./img/logo-complet.png')} height={70} />
+                        {/*<img src={require('./img/logo-complet.png')} alt={"Logo AMoS ED"} height={70} />*/}
+                        <img src={logoComplet} alt={"Logo AMoS ED"} height={70} />
                     </div>
 
                     {!this.state.registered && (
