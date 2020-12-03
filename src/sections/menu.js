@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
     title: {
         display: 'flex',
         flexGrow: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: window.innerWidth <= 550 ? 'center' : 'left'
     },
 }));
 
@@ -43,11 +44,11 @@ export default function Menu() {
                     {/*    <MenuIcon />*/}
                     {/*</IconButton>*/}
                     <Typography variant="h6" className={classes.title}>
-                    <Hidden xsDown>
+                    {/*<Hidden xsDown>*/}
                         <Link to={"/"} style={{display: 'flex', alignItems: 'center'}}>
                             <img src={logo} height={50} />
                         </Link>
-                    </Hidden>
+                    {/*</Hidden>*/}
                     </Typography>
                     {/*<Button color="inherit">Login</Button>*/}
                 </Toolbar>

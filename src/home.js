@@ -31,7 +31,6 @@ export default function Home() {
 
     const classes = useStyles();
     return (
-        //TODO: Kinda dashboard cu ceea ce poate face userul
         //TODO: navigare catre acele pagini
         <div>
             <h1 style={{textAlign: 'center', color: 'white'}}>AppMoS ED</h1>
