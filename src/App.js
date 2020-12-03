@@ -5,27 +5,32 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import Registration from './registration';
 import Home from './home';
-import Login from './login';
-import Logout from './logout';
-import GoogleBtn from './GoogleBtm';
+import Menu from "./sections/menu";
+import Authenticate from "./account/authenticate";
+import ProtectedRoute from "./account/ProtectedRoute";
 
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/:activityId" component={Registration} />
-        <Route>
-          <Home />
-          {/* <Login /> */}
-          {/* <Logout /> */}
-        </Route>
-      </Switch>
-    </Router>
+    <div>
+        <Router>
+            <Menu/>
+            <Switch>
+                <Route path={"/login"}>
+                    <Authenticate/>
+                </Route>
+                <Route path="/:activityId" component={Registration} />
+                <ProtectedRoute>
+                    <Home />
+                    {/* <Login /> */}
+                    {/* <Logout /> */}
+                </ProtectedRoute>
+            </Switch>
+        </Router>
+    </div>
   );
 }
 

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-
 
 
 const CLIENT_ID = '903421930963-1ge1ojfih185tjue4mivq6l6o559s79c.apps.googleusercontent.com';
