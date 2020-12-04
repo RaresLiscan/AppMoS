@@ -5,7 +5,7 @@ import {Route, Redirect} from "react-router-dom";
 export default function ProtectedRoute({children, ...rest}) {
     if (authProvider.isAuthenticated()) {
         return (
-            <Route>
+            <Route {...rest}>
                 {children}
             </Route>
         )

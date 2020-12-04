@@ -13,6 +13,7 @@ import Authenticate from "./account/authenticate";
 import ProtectedRoute from "./account/ProtectedRoute";
 import EditareRaport from "./rapoarte/editRaportDeActivitate";
 import firebase from "firebase";
+import SelectareActivitate from "./selectareActivitate";
 
 async function initFirebase() {
     var firebaseConfig = {
@@ -58,17 +59,22 @@ function App() {
         <Router>
             <Menu/>
             <Switch>
-                <Route path={"/login"}>
-                    <Authenticate authProvider={provider}/>
-                </Route>
-                <Route path="/:activityId" component={Registration} />
-                <ProtectedRoute path={"/reportEdit"}>
+                <ProtectedRoute path={"/reportEdit"} exact>
                     <EditareRaport/>
                 </ProtectedRoute>
+
+                <ProtectedRoute path={"/selectActivity"} exact>
+                    <SelectareActivitate/>
+                </ProtectedRoute>
+
+                <Route path={"/login"} exact>
+                    <Authenticate authProvider={provider} />
+                </Route>
+
+                <Route path="/:activityId" component={Registration} exact />
+                
                 <ProtectedRoute>
                     <Home />
-                    {/* <Login /> */}
-                    {/* <Logout /> */}
                 </ProtectedRoute>
             </Switch>
         </Router>

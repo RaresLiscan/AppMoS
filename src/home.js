@@ -40,7 +40,7 @@ export default function Home() {
                         <h1 style={{textAlign: 'center'}}>Rapoarte de activitate</h1>
                         <center>
                             <p>Raportul de activitate este dovada ta prin care ne arăți cât de mult ai muncit în luna aceasta. Completează-l aici</p>
-                            <Link to={"/"}>
+                            <Link to={"/reportEdit"}>
                                 <Button variant={"contained"} className={classes.button}>Completează-ți raportul</Button>
                             </Link>
                         </center>
@@ -51,7 +51,7 @@ export default function Home() {
                         <h1 style={{textAlign: 'center'}}>Inscrie-te la o activitate</h1>
                         <center>
                             <p>Când participi la o activitate poți folosi această secțiune pentru a te înscrie virtual la aceasta. Cere organizatorilor codul activității, introdu-l și ai terminat</p>
-                            <Link to={"/"}>
+                            <Link to={"/selectActivity"}>
                                 <Button variant={"contained"} className={classes.button}>Înscrie-te</Button>
                             </Link>
                         </center>
