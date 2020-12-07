@@ -1,34 +1,30 @@
 import React from 'react';
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import MonthSelect from "./MonthSelect";
 
-const months = [
-    "",
-    "Ianuarie",
-    "Februarie",
-    "Martie",
-    "Aprilie",
-    "Mai",
-    "Iunie",
-    "Iulie",
-    "August",
-    "Septembrie",
-    "Octombrie",
-    "Noiembrie",
-    "Decembrie"
-]
 
 export default class EditareRaport extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            month: 1
+            month: "Ianuarie"
         }
     }
 
     //TODO: Selectare luna
 
-    selectMonth = () => {
+    updateMonth = (month) => {
+        this.setState({month: month});
+    }
 
+    selectMonth = () => {
+        return (
+            <MonthSelect updateMonth={this.updateMonth}/>
+        )
     }
 
     //TODO: component field-uri
@@ -37,6 +33,7 @@ export default class EditareRaport extends React.Component {
         return (
             <div>
                 <p>Editare raport de activitate</p>
+                {this.selectMonth()}
             </div>
         )
     }
