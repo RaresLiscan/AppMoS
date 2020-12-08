@@ -44,7 +44,7 @@ export default function MonthSelect({ updateMonth }) {
     return (
         <div style={{backgroundColor: 'white'}}>
             <Grid container spacing={0}>
-                <Grid item xs={0} lg={2}>
+                <Grid item xs={false} lg={2}>
                     <h3 style={{textAlign: 'center'}}>Selecteaza luna</h3>
                 </Grid>
                 <Grid item xs={12} lg={10} style={{display: 'flex', justifyContent: 'center'}}>
@@ -58,7 +58,7 @@ export default function MonthSelect({ updateMonth }) {
                         >
                             {months.map((m, i) => {
                                 if (i !== 0) {
-                                    return <MenuItem value={m}>{m}</MenuItem>
+                                    return <MenuItem key={m} value={m}>{m}</MenuItem>
                                 }
                             })}
                         </Select>

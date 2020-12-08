@@ -9,6 +9,8 @@
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.0",
+    "date-fns": "^2.16.1",
     "firebase": "^8.0.0",
     "jspdf": "^2.1.1",
     "jspdf-autotable": "^3.5.13",

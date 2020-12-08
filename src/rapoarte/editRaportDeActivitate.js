@@ -18,12 +18,28 @@ export default class EditareRaport extends React.Component {
         this.state = {
             month: "",
             data: [new ReportField()],
-            selfDevData: [new ReportField()]
+            selfDevData: [new ReportField()],
+            newChange: false
         }
+        this.update = setInterval(() => {
+            if (this.state.newChange) {
+                this.updateUserReport();
+                this.setState({newChange: false});
+            }
+        }, 5000);
+    }
+
+    componentWillUnmount() {
+        this.updateUserReport();
+        clearInterval(this.update);
+    }
+
+    updateUserReport = () => {
+        console.log("Updated");
     }
 
     updateMonth = (month) => {
-        this.setState({ month: month });
+        this.setState({ month: month, newChange: true });
     }
 
     selectMonth = () => {
@@ -34,7 +50,7 @@ export default class EditareRaport extends React.Component {
 
     updateFields = (newField, index) => {
         this.state.data[index] = newField;
-        this.setState({ data: this.state.data });
+        this.setState({ data: this.state.data, newChange: true });
         console.log(newField);
     }
 
@@ -43,7 +59,7 @@ export default class EditareRaport extends React.Component {
             <div>
                 {this.state.data.map((actField, index) => {
                     return (
-                        <FormFields onChangeFields={this.updateFields} index={index} field={actField} />
+                        <FormFields key={index} onChangeFields={this.updateFields} index={index} field={actField} />
                     )
                 })}
             </div>
@@ -52,7 +68,7 @@ export default class EditareRaport extends React.Component {
 
     updateSelfDevField = (newField, index) => {
         this.state.selfDevData[index] = newField;
-        this.setState({ selfDevData: this.state.selfDevData });
+        this.setState({ selfDevData: this.state.selfDevData, newChange: true });
         console.log(this.state.selfDevData);
     }
 
@@ -61,7 +77,7 @@ export default class EditareRaport extends React.Component {
             <div>
                 {this.state.selfDevData.map((actField, index) => {
                     return (
-                        <FormFields onChangeFields={this.updateSelfDevField} index={index} field={actField} />
+                        <FormFields key={index} onChangeFields={this.updateSelfDevField} index={index} field={actField} />
                     )
                 })}
             </div>

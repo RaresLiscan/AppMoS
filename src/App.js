@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -14,6 +13,8 @@ import ProtectedRoute from "./account/ProtectedRoute";
 import EditareRaport from "./rapoarte/editRaportDeActivitate";
 import firebase from "firebase";
 import SelectareActivitate from "./selectareActivitate";
+import PdfReport from './rapoarte/raportPDF';
+import Tickets from './testPdfGenerator/Tickets';
 
 async function initFirebase() {
     var firebaseConfig = {
@@ -65,6 +66,10 @@ function App() {
 
                 <ProtectedRoute path={"/selectActivity"} exact>
                     <SelectareActivitate/>
+                </ProtectedRoute>
+
+                <ProtectedRoute path={"/report"} exact>
+                    <Tickets />
                 </ProtectedRoute>
 
                 <Route path={"/login"} exact>

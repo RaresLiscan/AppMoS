@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import ReportField from './ReportField';
 
 const useStyles = makeStyles({
     root: {
@@ -50,24 +49,24 @@ export default function FormFields({onChangeFields, field, index}) {
                     <Grid item xs={12} md={3}>
                         <TextField value={title} 
                         onChange={(event) => updateTitle(event.target.value)} 
-                        id="title" label="Nume activitate" variant="filled" />
+                        label="Nume activitate" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField 
                         value={project}
                         onChange={event => updateProject(event.target.value)}
-                        id="project" label="Nume proiect" variant="filled" />
+                        label="Nume proiect" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField value={date}
                         onChange={event => updateDate(event.target.value)} 
-                        id="date" label="Data" variant="filled" />
+                        label="Data" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField 
                         value={workTime}
                         onChange={(event) => updateWorkTime(event.target.value)}
-                        id="workTime" label="Durata (in minute)" variant="filled" />
+                        label="Durata (in minute)" variant="filled" />
                     </Grid>
                 </Grid>
             </form>
