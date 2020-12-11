@@ -10,6 +10,8 @@ import ReportField from './ReportField';
 import AddIcon from '@material-ui/icons/Add';
 import { Button } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
+import generatePDF from './reportGenerator';
+import SubmitButtons from './SubmitButtons';
 
 export default class EditareRaport extends React.Component {
 
@@ -27,6 +29,10 @@ export default class EditareRaport extends React.Component {
                 this.setState({newChange: false});
             }
         }, 5000);
+    }
+
+    downloadPdf = () => {
+        generatePDF(this.state.data, this.state.selfDevData);
     }
 
     componentWillUnmount() {
@@ -131,13 +137,20 @@ export default class EditareRaport extends React.Component {
             <center>
                 <div style={{ width: '80%' }}>
                     <p style={{ textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: 'white' }}>Editare raport de activitate</p>
-                    <div style={{ backgroundColor: 'white' }}>
+                    <div style={{ backgroundColor: 'white', padding: '2%' }}>
                         {this.selectMonth()}
-                        <h2>Activitati aferente postului</h2>
-                        {this.postActivities()}
-                        <Divider />
-                        <h2>Implicare in dezvoltarea personala</h2>
-                        {this.selfDevFields()}
+                        {this.state.month.length > 0 ? (
+                            <div>
+                                <h2>Activitati aferente postului</h2>
+                                {this.postActivities()}
+                                <Divider />
+                                <h2>Implicare in dezvoltarea personala</h2>
+                                {this.selfDevFields()}
+                                <div>
+                                    <SubmitButtons saveChanges={this.updateUserReport} downloadPdf={this.downloadPdf} />
+                                </div>
+                            </div>
+                        ) : (<div></div>)}
                     </div>
                 </div>
             </center>

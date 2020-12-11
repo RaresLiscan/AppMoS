@@ -1,10 +1,10 @@
 class ReportField {
 
     constructor() {
-        this.title = "";
-        this.project = "";
-        this.date = "";
-        this.time = 0;//minutes
+        this.title = "Titlu inspirat";
+        this.project = "ceva interesant";
+        this.date = "2020-11-30";
+        this.time = 120;//minutes
     }
 
     //Setters
