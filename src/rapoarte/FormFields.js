@@ -19,26 +19,26 @@ export default function FormFields({onChangeFields, field, index}) {
     const [workTime, setWorkTime] = useState(0);
 
     const updateTitle = (newTitle) => {
-        field.setTitle(newTitle);
         setTitle(newTitle);
+        field.setName(newTitle);
         onChangeFields(field, index);
     }
 
     const updateProject = (project) => {
-        field.setProject(project);
         setProject(project);
+        field.setProject(project);
         onChangeFields(field, index);
     }
 
     const updateDate = (date) => {
-        field.setDate(date);
         setDate(date);
+        field.setDate(date);
         onChangeFields(field, index);
     }
 
     const updateWorkTime = (newTime) => {
-        field.setTime(newTime);
         setWorkTime(newTime);
+        field.setTime(newTime);
         onChangeFields(field, index);
     }
 

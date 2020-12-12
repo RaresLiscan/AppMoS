@@ -12,23 +12,27 @@ import { Button } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import generatePDF from './reportGenerator';
 import SubmitButtons from './SubmitButtons';
+import ReportOperations from './reportsOps';
 
 export default class EditareRaport extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            year: '',
             month: "",
             data: [new ReportField()],
             selfDevData: [new ReportField()],
             newChange: false
         }
-        this.update = setInterval(() => {
-            if (this.state.newChange) {
-                this.updateUserReport();
-                this.setState({newChange: false});
-            }
-        }, 5000);
+        this.data = [new ReportField()];
+        this.selfDevData = [new ReportField()];
+        // this.update = setInterval(() => {
+        //     if (this.state.newChange) {
+        //         this.updateUserReport();
+        //         this.setState({newChange: false});
+        //     }
+        // }, 5000);
     }
 
     downloadPdf = () => {
@@ -36,28 +40,44 @@ export default class EditareRaport extends React.Component {
     }
 
     componentWillUnmount() {
-        this.updateUserReport();
-        clearInterval(this.update);
+        // this.updateUserReport();
+        // clearInterval(this.update);
     }
 
     updateUserReport = () => {
-        console.log("Updated");
+        if (this.state.newChange) {
+            ReportOperations.addActivity(this.data, this.selfDevData)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => console.log(error));
+        }
+    }
+
+    getDbData = () => {
+        console.log("Data updated");
     }
 
     updateMonth = (month) => {
-        this.setState({ month: month, newChange: true });
+        this.setState({ month: month });
+        this.getDbData();
+    }
+    
+    updateYear = (year) => {
+        this.setState({ year: year });
+        this.getDbData();
     }
 
     selectMonth = () => {
         return (
-            <MonthSelect updateMonth={this.updateMonth} />
+            <MonthSelect updateMonth={this.updateMonth} updateYear={this.updateYear} />
         )
     }
 
     updateFields = (newField, index) => {
-        this.state.data[index] = newField;
-        this.setState({ data: this.state.data, newChange: true });
-        console.log(newField);
+        this.data[index] = newField;
+        this.setState({newChange: true});
+        // this.setState({ data: this.state.data, newChange: true });
     }
 
     ReportField = () => {
@@ -73,9 +93,9 @@ export default class EditareRaport extends React.Component {
     }
 
     updateSelfDevField = (newField, index) => {
-        this.state.selfDevData[index] = newField;
-        this.setState({ selfDevData: this.state.selfDevData, newChange: true });
-        console.log(this.state.selfDevData);
+        this.selfDevData[index] = newField;
+        this.setState({newChange: true});
+        // this.setState({ selfDevData: this.state.selfDevData, newChange: true });
     }
 
     SelfDevFields = () => {
@@ -139,7 +159,7 @@ export default class EditareRaport extends React.Component {
                     <p style={{ textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: 'white' }}>Editare raport de activitate</p>
                     <div style={{ backgroundColor: 'white', padding: '2%' }}>
                         {this.selectMonth()}
-                        {this.state.month.length > 0 ? (
+                        {this.state.month.length > 0 && this.state.year.length > 0 ? (
                             <div>
                                 <h2>Activitati aferente postului</h2>
                                 {this.postActivities()}

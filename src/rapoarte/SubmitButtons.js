@@ -20,9 +20,9 @@ export default function SubmitButtons({ saveChanges, downloadPdf }) {
 
     return (
         <div>
-            <div style={{display: 'flex', alignItems: 'flex-start', margin: '1%'}}>
+            {/* <div style={{display: 'flex', alignItems: 'flex-start', margin: '1%'}}>
                 <Button onClick={() => saveChanges()} className={classes.saveButton}>Salvează modificările</Button>
-            </div>
+            </div> */}
             <div style={{display: 'flex', alignItems: 'flex-start', margin: '1%'}}>
                 <Button onClick={() => downloadPdf()} className={classes.saveButton}>Descarcă raportul</Button>
             </div>

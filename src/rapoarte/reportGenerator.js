@@ -10,6 +10,7 @@ import antet from '../img/src_img_antet.png';
 const generatePDF = (activities, personalDevelopment) => {
   // initialize jsPDF
   const doc = new jsPDF();
+  
 
   // define the columns we want and their titles
   const tableColumn = ["Nr. Crt", "Activitate", "Proiect", "Data", "Durata"];
@@ -20,7 +21,7 @@ const generatePDF = (activities, personalDevelopment) => {
   activities.forEach((activity, index) => {
     const activityData = [
       index + 1,
-      activity.title,
+      activity.name,
       activity.project,
       activity.date,
       activity.time,
@@ -37,7 +38,7 @@ const generatePDF = (activities, personalDevelopment) => {
   personalDevelopment.forEach((activity, index) => {
     const devData = [
       index + 1,
-      activity.title,
+      activity.name,
       activity.project,
       activity.date,
       activity.time,
@@ -46,21 +47,29 @@ const generatePDF = (activities, personalDevelopment) => {
   });
 
 
-  doc.addImage(antet, "PNG", 20, 10, 175, 23);
+  doc.addImage(antet, "PNG", 17, 10, 175, 23);
   doc.text("Raport de activitate", 80, 45);
   doc.text("Nr. ______/_______", 80, 53);
+  doc.setFontSize(12);
+  doc.text("Activitati aferente postului", 15, 68);
   // startY is basically margin-top
-  doc.autoTable(tableColumn, tableRows, { startY: 65, theme: 'plain', headStyles: {
+  doc.autoTable(tableColumn, tableRows, { startY: 70, theme: 'plain', headStyles: {
     fillColor: "#000000",
     textColor: 'white',
     fontSize: 12
   } });
 
-  doc.autoTable(tableColumnSelfDev, tableRowsSelfDev, {theme: 'plain', headStyles: {
+  let textY = doc.lastAutoTable.finalY + 9;
+
+  doc.text("Implicare in dezvoltarea personala", 15, textY);
+
+  doc.autoTable(tableColumnSelfDev, tableRowsSelfDev, {startY: textY + 2, theme: 'plain', headStyles: {
     fillColor: "#00000",
     textColor: 'white',
     fontSize: 12,
   } });
+
+  
   const date = Date().split(" ");
   // we use a date string to generate our filename.
   const dateStr = date[0] + date[1] + date[2] + date[3] + date[4];

@@ -17,7 +17,7 @@ class AuthProvider {
     login = (user) => {
         this._user = user;
         this._authenticated = true;
-        //TODO: request to the server with the new user
+        
     }
 }
 
