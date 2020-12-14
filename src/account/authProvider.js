@@ -2,7 +2,7 @@ import firebase from "firebase";
 
 class AuthProvider {
     constructor() {
-        this._authenticated = true;
+        this._authenticated = false;
         this._user = {};
     }
 
