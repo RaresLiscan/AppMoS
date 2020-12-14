@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
+    BrowserRouter as Router,
+    Switch,
+    Route,
 } from "react-router-dom";
 import Registration from './registration';
 import Home from './home';
@@ -13,6 +12,7 @@ import Authenticate from "./account/authenticate";
 import ProtectedRoute from "./account/ProtectedRoute";
 import EditareRaport from "./rapoarte/editRaportDeActivitate";
 import firebase from "firebase";
+import SelectareActivitate from "./selectareActivitate";
 
 async function initFirebase() {
     var firebaseConfig = {
@@ -47,33 +47,38 @@ function App() {
             setAuthProvider(new firebase.auth.GoogleAuthProvider());
             setInit(true);
         }
-    })
+    });
 
     if (!init) {
         return <div></div>
     }
 
-  return (
-    <div>
-        <Router>
-            <Menu/>
-            <Switch>
-                <Route path={"/login"}>
-                    <Authenticate authProvider={provider}/>
-                </Route>
-                <Route path="/:activityId" component={Registration} />
-                <ProtectedRoute path={"/reportEdit"}>
-                    <EditareRaport/>
-                </ProtectedRoute>
-                <ProtectedRoute>
-                    <Home />
-                    {/* <Login /> */}
-                    {/* <Logout /> */}
-                </ProtectedRoute>
-            </Switch>
-        </Router>
-    </div>
-  );
+    return (
+        <div>
+            <Router>
+                <Menu/>
+                <Switch>
+                    <ProtectedRoute path={"/reportEdit"} exact>
+                        <EditareRaport/>
+                    </ProtectedRoute>
+
+                    <ProtectedRoute path={"/selectActivity"} exact>
+                        <SelectareActivitate/>
+                    </ProtectedRoute>
+
+                    <Route path={"/login"} exact>
+                        <Authenticate authProvider={provider} />
+                    </Route>
+
+                    <Route path="/:activityId" component={Registration} exact />
+
+                    <ProtectedRoute>
+                        <Home />
+                    </ProtectedRoute>
+                </Switch>
+            </Router>
+        </div>
+    );
 }
 
 export default App;
