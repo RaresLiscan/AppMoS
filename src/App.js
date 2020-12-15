@@ -13,6 +13,8 @@ import ProtectedRoute from "./account/ProtectedRoute";
 import EditareRaport from "./rapoarte/editRaportDeActivitate";
 import firebase from "firebase";
 import SelectareActivitate from "./selectareActivitate";
+import authProviderClass from './account/authProvider';
+import User from './account/user.model';
 
 async function initFirebase() {
     var firebaseConfig = {
@@ -35,6 +37,27 @@ function App() {
 
     const [init, setInit] = useState(false);
     const [provider, setAuthProvider] = useState({});
+    const [userSet, setUser] = useState(false);
+
+    const updateUser = async (email, name) => {
+        const userModel = new User(name, email);
+        await authProviderClass.authServerRequest(userModel)
+            .then(user => {
+                authProviderClass.setUserState(user, true);
+            })
+            .catch(error => console.log(error));
+        
+    }
+
+    const checkUserSession = async () => {
+        await firebase.auth().onAuthStateChanged(async user => {
+            console.log(user);
+            if (user) {
+                await updateUser();
+            }
+            setUser(true);
+        });
+    }
 
     useEffect(() => {
         if (!init) {
@@ -46,10 +69,11 @@ function App() {
             })
             setAuthProvider(new firebase.auth.GoogleAuthProvider());
             setInit(true);
+            checkUserSession();
         }
     });
 
-    if (!init) {
+    if (!init || !userSet) {
         return <div></div>
     }
 

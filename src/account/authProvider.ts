@@ -38,6 +38,11 @@ class AuthProvider {
                 return Promise.reject(error);
             });
     }
+
+    setUserState = (user : Object, authenticated : Boolean) => {
+        this._user = user;
+        this._authenticated = authenticated;   
+    }
 }
 
 export default new AuthProvider();

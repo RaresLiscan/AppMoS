@@ -34,24 +34,32 @@ export default function Authenticate({ authProvider }) {
     //TODO: Request to server
 
     const googleAuth = () => {
-        firebase.auth().signInWithPopup(authProvider).then(function (result) {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            // var token = result.credential.accessToken;
-            // The signed-in user info.
-            var user = result.user;
-            //TODO: server request with the data to register user in SQL
-            const userModel = new User(user.displayName, user.email);
-            authProviderClass.login(userModel)
-                .then(response => {
-                    console.log(response);
-                    history.push('/');
-                })
-                .catch(error => {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                return firebase.auth().signInWithPopup(authProvider).then(function (result) {
+                    // This gives you a Google Access Token. You can use it to access the Google API.
+                    // var token = result.credential.accessToken;
+                    // The signed-in user info.
+                    var user = result.user;
+                    //TODO: server request with the data to register user in SQL
+                    const userModel = new User(user.displayName, user.email);
+                    authProviderClass.login(userModel)
+                        .then(response => {
+                            console.log(response);
+                            history.push('/');
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        })
+                }).catch(function (error) {
                     console.error(error);
-                })
-        }).catch(function (error) {
-            console.error(error);
-        });
+                    throw new Error(error);
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        
     }
 
     return (
