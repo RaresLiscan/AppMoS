@@ -69,6 +69,12 @@ const generatePDF = (activities, personalDevelopment) => {
     fontSize: 12,
   } });
 
+  doc.setFontSize(10);
+  textY = doc.lastAutoTable.finalY + 13;
+  doc.text("Data: ", 15, textY);
+  doc.text("Semnatura: ", 162, textY);
+
+
   
   const date = Date().split(" ");
   // we use a date string to generate our filename.

@@ -14,6 +14,7 @@ const useStyles = makeStyles({
     }
 })
 
+//Cele 2 butoane din josul paginii: salveaza si descarca pdf
 export default function SubmitButtons({ saveChanges, downloadPdf }) {
 
     const classes = useStyles();
