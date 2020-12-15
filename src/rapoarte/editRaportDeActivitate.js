@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import generatePDF from './reportGenerator';
 import SubmitButtons from './SubmitButtons';
 import ReportOperations from './reportsOps';
+import authProvider from '../account/authProvider';
 
 export default class EditareRaport extends React.Component {
 
