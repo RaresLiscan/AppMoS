@@ -1,3 +1,6 @@
+//Clasa model pentru campurile rapoartelor
+//Este utila ca sa stim ce se afla intr-un raport si sa ne fie usor de luat datele din ea
+
 class ReportField {
 
     constructor() {
@@ -28,6 +31,7 @@ class ReportField {
         this.time = time;
     }
 
+    //Pentru request-uri de tip PUT, avem nevoie de o formatare cu tot cu ID
     formatAsJSONWithID() {
         const time = typeof this.time === "string" ? parseInt(this.time) : this.time;
         return JSON.stringify({
@@ -39,6 +43,7 @@ class ReportField {
         });
     }
 
+    //Pentru request-uri de tip post, nu este necesar sa punem si ID
     formatAsJson() {
         const time = typeof this.time === "string" ? parseInt(this.time) : this.time;
         return JSON.stringify({

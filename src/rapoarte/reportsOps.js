@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//Clasa asta contine metode statice prin care facem request-uri catre baza de date
 const API_URL = "http://localhost/rapoarte/"
 export default class ReportOperations {
 

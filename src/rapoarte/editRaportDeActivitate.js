@@ -21,12 +21,10 @@ export default class EditareRaport extends React.Component {
         this.state = {
             year: '',
             month: "",
-            data: [new ReportField()],
-            selfDevData: [new ReportField()],
-            newChange: false
+            newChange: false//pentru auto-updates, variabila ne indica daca exista vreo schimbare noua
         }
-        this.data = [new ReportField()];
-        this.selfDevData = [new ReportField()];
+        this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
+        this.selfDevData = [new ReportField()];//toate activitatile pentru dezvoltarea personala
         // this.update = setInterval(() => {
         //     if (this.state.newChange) {
         //         this.updateUserReport();
@@ -36,7 +34,7 @@ export default class EditareRaport extends React.Component {
     }
 
     downloadPdf = () => {
-        generatePDF(this.state.data, this.state.selfDevData);
+        generatePDF(this.data[0], this.data[1]);
     }
 
     componentWillUnmount() {
@@ -55,15 +53,18 @@ export default class EditareRaport extends React.Component {
     }
 
     getDbData = () => {
+        //TODO: request-uri din sql
         console.log("Data updated");
     }
 
     updateMonth = (month) => {
+        //update din componentul MonthSelect
         this.setState({ month: month });
         this.getDbData();
     }
     
     updateYear = (year) => {
+        //update din componentul MonthSelect
         this.setState({ year: year });
         this.getDbData();
     }
@@ -74,76 +75,39 @@ export default class EditareRaport extends React.Component {
         )
     }
 
-    updateFields = (newField, index) => {
-        this.data[index] = newField;
+    updateFields = (newField, index, type) => {
+        this.data[type][index] = newField;
         this.setState({newChange: true});
-        // this.setState({ data: this.state.data, newChange: true });
     }
 
-    ReportField = () => {
+    //Field-urile pentru activitati aferente postului
+    ReportField = (type) => {
         return (
             <div>
-                {this.state.data.map((actField, index) => {
+                {/* pentru fiecare activitate din dezvoltarea personala randam un FormField */}
+                {this.data[type].map((actField, index) => {
                     return (
-                        <FormFields key={index} onChangeFields={this.updateFields} index={index} field={actField} />
+                        <FormFields key={index} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
                     )
                 })}
             </div>
         )
     }
 
-    updateSelfDevField = (newField, index) => {
-        this.selfDevData[index] = newField;
-        this.setState({newChange: true});
-        // this.setState({ selfDevData: this.state.selfDevData, newChange: true });
+    //Functia apelata cand se apasa butonul de adaugare activitate la act. aferente postului
+    addNewField = (type) => {
+        this.data[type].push(new ReportField());
+        this.setState({ newChange: true });
     }
 
-    SelfDevFields = () => {
-        return (
-            <div>
-                {this.state.selfDevData.map((actField, index) => {
-                    return (
-                        <FormFields key={index} onChangeFields={this.updateSelfDevField} index={index} field={actField} />
-                    )
-                })}
-            </div>
-        )
-    }
-
-    addNewField = () => {
-        this.state.data.push(new ReportField());
-        this.setState({ data: this.state.data });
-    }
-
-    addNewLearningField = () => {
-        this.state.selfDevData.push(new ReportField());
-        this.setState({ selfDevData: this.state.selfDevData });
-    }
-
-    postActivities = () => {
+    postActivities = (type) => {
         return (
             <div>
                 <div style={{ width: '100%', padding: '1%' }}>
-                    <this.ReportField />
+                    {this.ReportField(type)}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <Button onClick={this.addNewField}>
-                        <AddIcon style={{ backgroundColor: 'white', borderRadius: '50%' }} />
-                        <p>Adaugă o activitate</p>
-                    </Button>
-                </div>
-            </div>
-        )
-    }
-
-    selfDevFields = () => {
-        return (
-            <div>
-                <div style={{ width: '100%', padding: '1%' }}>
-                    <this.SelfDevFields />
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <Button onClick={this.addNewLearningField}>
+                    <Button onClick={() => this.addNewField(type)}>
                         <AddIcon style={{ backgroundColor: 'white', borderRadius: '50%' }} />
                         <p>Adaugă o activitate</p>
                     </Button>
@@ -162,10 +126,10 @@ export default class EditareRaport extends React.Component {
                         {this.state.month.length > 0 && this.state.year.length > 0 ? (
                             <div>
                                 <h2>Activitati aferente postului</h2>
-                                {this.postActivities()}
+                                {this.postActivities(0)}
                                 <Divider />
                                 <h2>Implicare in dezvoltarea personala</h2>
-                                {this.selfDevFields()}
+                                {this.postActivities(1)}
                                 <div>
                                     <SubmitButtons saveChanges={this.updateUserReport} downloadPdf={this.downloadPdf} />
                                 </div>

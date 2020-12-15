@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     }
 })
 // let field = new ReportField();
-export default function FormFields({onChangeFields, field, index}) {
+export default function FormFields({onChangeFields, field, index, type}) {
 
     const classes = useStyles();
     const [title, setTitle] = useState('');
@@ -21,25 +21,25 @@ export default function FormFields({onChangeFields, field, index}) {
     const updateTitle = (newTitle) => {
         setTitle(newTitle);
         field.setName(newTitle);
-        onChangeFields(field, index);
+        onChangeFields(field, index, type);
     }
 
     const updateProject = (project) => {
         setProject(project);
         field.setProject(project);
-        onChangeFields(field, index);
+        onChangeFields(field, index, type);
     }
 
     const updateDate = (date) => {
         setDate(date);
         field.setDate(date);
-        onChangeFields(field, index);
+        onChangeFields(field, index, type);
     }
 
     const updateWorkTime = (newTime) => {
         setWorkTime(newTime);
         field.setTime(newTime);
-        onChangeFields(field, index);
+        onChangeFields(field, index, type);
     }
 
     return (

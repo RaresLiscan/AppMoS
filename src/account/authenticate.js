@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     }
 })
 
+//Pagina de login cu G Suite
 export default function Authenticate({authProvider}) {
 
     const classes = useStyles();

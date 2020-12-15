@@ -44,19 +44,23 @@ export default function MonthSelect({ updateMonth, updateYear }) {
         }
     });
 
+    //Pune intr-un array toti anii specificati
+    //array-ul rezultat va fi folosit in meniul de selectare al anului
     const generateYears = () => {
         let yearArray = [];
-        for (var i = 2018; i <= 2022; i ++) {
+        for (var i = 2019; i <= 2021; i ++) {
             yearArray.push(i);
         }
         setYears(yearArray);
     }
 
+    //Actualizeaza in state luna si face callback in componentul mai mare
     const updateMonthEvent = (event) => {
         setMonth(event.target.value);
         updateMonth(event.target.value);
     }
 
+    //Actualizeaza anul in state si face callback in componentul mare
     const updateYearEvent = (event) => {
         setSelectedYear(event.target.value);
         updateYear(event.target.value.toString());
