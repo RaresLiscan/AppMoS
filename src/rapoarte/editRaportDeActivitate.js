@@ -85,7 +85,7 @@ export default class EditareRaport extends React.Component {
     ReportField = (type) => {
         return (
             <div>
-                {/* pentru fiecare activitate din dezvoltarea personala randam un FormField */}
+                {/* pentru fiecare activitate randam un FormField */}
                 {this.data[type].map((actField, index) => {
                     return (
                         <FormFields key={index} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
@@ -95,7 +95,7 @@ export default class EditareRaport extends React.Component {
         )
     }
 
-    //Functia apelata cand se apasa butonul de adaugare activitate la act. aferente postului
+    //Functia apelata cand se apasa butonul de adaugare activitate la activitati
     addNewField = (type) => {
         this.data[type].push(new ReportField());
         this.setState({ newChange: true });

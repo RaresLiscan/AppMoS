@@ -18,15 +18,19 @@ const generatePDF = (activities, personalDevelopment) => {
   const tableRows = [];
 
   // for each ticket pass all its data into an array
+  let idx = 1;
   activities.forEach((activity, index) => {
-    const activityData = [
-      index + 1,
-      activity.name,
-      activity.project,
-      activity.date,
-      activity.time,
-    ];
-    tableRows.push(activityData);
+    if (!(activity.project.length === 0 || activity.name.length === 0 || activity.date.length === 0 || activity.time === 0)) {
+      const devData = [
+        idx,
+        activity.name,
+        activity.project,
+        activity.date,
+        activity.time,
+      ];
+      tableRows.push(devData);
+      idx ++;
+    }
   });
 
   // define the columns we want and their titles
@@ -35,15 +39,20 @@ const generatePDF = (activities, personalDevelopment) => {
   const tableRowsSelfDev = [];
 
   // for each ticket pass all its data into an array
+  idx = 1;
   personalDevelopment.forEach((activity, index) => {
-    const devData = [
-      index + 1,
-      activity.name,
-      activity.project,
-      activity.date,
-      activity.time,
-    ];
-    tableRowsSelfDev.push(devData);
+    if (!(activity.project.length === 0 || activity.name.length === 0 || activity.date.length === 0 || activity.time === 0)) {
+      const devData = [
+        idx,
+        activity.name,
+        activity.project,
+        activity.date,
+        activity.time,
+      ];
+      tableRowsSelfDev.push(devData);
+      idx ++;
+    }
+    
   });
 
 
@@ -51,23 +60,26 @@ const generatePDF = (activities, personalDevelopment) => {
   doc.text("Raport de activitate", 80, 45);
   doc.text("Nr. ______/_______", 80, 53);
   doc.setFontSize(12);
-  doc.text("Activitati aferente postului", 15, 68);
   // startY is basically margin-top
-  doc.autoTable(tableColumn, tableRows, { startY: 70, theme: 'plain', headStyles: {
-    fillColor: "#000000",
-    textColor: 'white',
-    fontSize: 12
-  } });
+  if (tableRows.length > 0) {
+    doc.text("Activitati aferente postului", 15, 68);
+    doc.autoTable(tableColumn, tableRows, { startY: 70, theme: 'plain', headStyles: {
+      fillColor: "#000000",
+      textColor: 'white',
+      fontSize: 12
+    } });
+  }
 
-  let textY = doc.lastAutoTable.finalY + 9;
+  let textY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 9 : 68;
 
-  doc.text("Implicare in dezvoltarea personala", 15, textY);
-
-  doc.autoTable(tableColumnSelfDev, tableRowsSelfDev, {startY: textY + 2, theme: 'plain', headStyles: {
-    fillColor: "#00000",
-    textColor: 'white',
-    fontSize: 12,
-  } });
+  if (tableRowsSelfDev.length > 0) {
+    doc.text("Implicare in dezvoltarea personala", 15, textY);
+    doc.autoTable(tableColumnSelfDev, tableRowsSelfDev, {startY: textY + 2, theme: 'plain', headStyles: {
+      fillColor: "#00000",
+      textColor: 'white',
+      fontSize: 12,
+    } });
+  }
 
   doc.setFontSize(10);
   textY = doc.lastAutoTable.finalY + 13;
