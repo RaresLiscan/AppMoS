@@ -100,6 +100,14 @@ export default class EditareRaport extends React.Component {
         this.setState({newChange: true});
     }
 
+    deleteItem = (index, type) => {
+        console.log(index);
+        console.log(type);
+        this.data[type].splice(index, 1);
+        this.setState({ newChange: true });
+        // this.state.data[type].remove(index) sau ceva de genul asta
+    }
+
     //Field-urile pentru activitati aferente postului
     ReportField = (type) => {
         return (
@@ -107,7 +115,7 @@ export default class EditareRaport extends React.Component {
                 {/* pentru fiecare activitate randam un FormField */}
                 {this.data[type].map((actField, index) => {
                     return (
-                        <FormFields key={index} editable={this.state.editable} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+                        <FormFields key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
                     )
                 })}
             </div>
