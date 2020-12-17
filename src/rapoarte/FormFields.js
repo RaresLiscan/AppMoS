@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     }
 })
 // let field = new ReportField();
-export default function FormFields({onChangeFields, field, index, type}) {
+export default function FormFields({onChangeFields, field, index, type, editable}) {
 
     const classes = useStyles();
     const [title, setTitle] = useState('');
@@ -47,23 +47,25 @@ export default function FormFields({onChangeFields, field, index, type}) {
             <form className={classes.root} noValidate autoComplete="off">
                 <Grid container spacing={0}>
                     <Grid item xs={12} md={3}>
-                        <TextField value={title} 
+                        <TextField disabled={!editable} value={title} 
                         onChange={(event) => updateTitle(event.target.value)} 
                         label="Nume activitate" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField 
+                        disabled={!editable}
                         value={project}
                         onChange={event => updateProject(event.target.value)}
                         label="Nume proiect" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <TextField value={date}
+                        <TextField value={date} disabled={!editable}
                         onChange={event => updateDate(event.target.value)} 
                         label="Data" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField 
+                        disabled={!editable}
                         value={workTime}
                         onChange={(event) => updateWorkTime(event.target.value)}
                         label="Durata (in minute)" variant="filled" />

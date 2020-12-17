@@ -56,6 +56,7 @@ export default function MonthSelect({ updateMonth, updateYear }) {
 
     //Actualizeaza in state luna si face callback in componentul mai mare
     const updateMonthEvent = (event) => {
+        console.log(event);
         setMonth(event.target.value);
         updateMonth(event.target.value);
     }
@@ -63,7 +64,7 @@ export default function MonthSelect({ updateMonth, updateYear }) {
     //Actualizeaza anul in state si face callback in componentul mare
     const updateYearEvent = (event) => {
         setSelectedYear(event.target.value);
-        updateYear(event.target.value.toString());
+        updateYear(event.target.value);
     }
 
     return (
@@ -83,7 +84,7 @@ export default function MonthSelect({ updateMonth, updateYear }) {
                         >
                             {months.map((m, i) => {
                                 if (i !== 0) {
-                                    return <MenuItem key={m} value={m}>{m}</MenuItem>
+                                    return <MenuItem key={m} value={i}>{m}</MenuItem>
                                 }
                             })}
                         </Select>

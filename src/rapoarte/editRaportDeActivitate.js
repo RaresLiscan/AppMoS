@@ -14,15 +14,19 @@ import generatePDF from './reportGenerator';
 import SubmitButtons from './SubmitButtons';
 import ReportOperations from './reportsOps';
 import authProvider from '../account/authProvider';
+import { createFalse } from 'typescript';
+
+const COMPLETION_DAYS = 40;
 
 export default class EditareRaport extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            year: '',
-            month: "",
-            newChange: false//pentru auto-updates, variabila ne indica daca exista vreo schimbare noua
+            year: -1,
+            month: -1,
+            newChange: false,//pentru auto-updates, variabila ne indica daca exista vreo schimbare noua
+            editable: false,
         }
         this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
         this.selfDevData = [new ReportField()];//toate activitatile pentru dezvoltarea personala
@@ -58,16 +62,31 @@ export default class EditareRaport extends React.Component {
         console.log("Data updated");
     }
 
+    checkIfEditable = (month, year) => {
+        const today = new Date();
+        const reportDate = new Date(year, month, 1);
+        const diffTime = Math.abs(today - reportDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays > COMPLETION_DAYS || diffTime < 0) {
+            this.setState({editable: false});
+        }
+        else {
+            this.setState({editable: true});
+        }
+    }
+
     updateMonth = (month) => {
         //update din componentul MonthSelect
         this.setState({ month: month });
         this.getDbData();
+        this.checkIfEditable(month-1, this.state.year);
     }
     
     updateYear = (year) => {
         //update din componentul MonthSelect
         this.setState({ year: year });
         this.getDbData();
+        this.checkIfEditable(this.state.month-1, year);
     }
 
     selectMonth = () => {
@@ -88,7 +107,7 @@ export default class EditareRaport extends React.Component {
                 {/* pentru fiecare activitate randam un FormField */}
                 {this.data[type].map((actField, index) => {
                     return (
-                        <FormFields key={index} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+                        <FormFields key={index} editable={this.state.editable} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
                     )
                 })}
             </div>
@@ -121,10 +140,12 @@ export default class EditareRaport extends React.Component {
         return (
             <center>
                 <div style={{ width: '80%' }}>
-                    <p style={{ textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: 'white' }}>Editare raport de activitate</p>
+                    <p style={{ textAlign: 'center', fontSize: 22, fontWeight: 'bold', color: 'white' }}>
+                        {this.state.editable ? "Editare raport de activitate" : "Vizualizare raport de activitate"}
+                    </p>
                     <div style={{ backgroundColor: 'white', padding: '2%' }}>
                         {this.selectMonth()}
-                        {this.state.month.length > 0 && this.state.year.length > 0 ? (
+                        {this.state.month > 0 && this.state.year > 0 ? (
                             <div>
                                 <h2>Activitati aferente postului</h2>
                                 {this.postActivities(0)}
