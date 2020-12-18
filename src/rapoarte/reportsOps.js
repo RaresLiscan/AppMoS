@@ -9,13 +9,13 @@ export default class ReportOperations {
 
         profData.map(data => {
             let dataObj = data;
-            dataObj.type = 1;
+            dataObj.type = 0;
             dataArray.push(dataObj);
         })
 
         selfDevData.map(data => {
             let dataObj = data;
-            dataObj.type = 2;
+            dataObj.type = 1;
             dataArray.push(dataObj);
         })
 
