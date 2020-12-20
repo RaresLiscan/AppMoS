@@ -24,7 +24,7 @@ const generatePDF = (activities, personalDevelopment) => {
       activity.name,
       activity.project,
       activity.date,
-      activity.time,
+      (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m",
     ];
     tableRows.push(activityData);
   });
@@ -41,7 +41,7 @@ const generatePDF = (activities, personalDevelopment) => {
       activity.name,
       activity.project,
       activity.date,
-      activity.time,
+      (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m", 
     ];
     tableRowsSelfDev.push(devData);
   });
