@@ -56,7 +56,6 @@ export default function MonthSelect({ updateMonth, updateYear }) {
 
     //Actualizeaza in state luna si face callback in componentul mai mare
     const updateMonthEvent = (event) => {
-        console.log(event);
         setMonth(event.target.value);
         updateMonth(event.target.value);
     }

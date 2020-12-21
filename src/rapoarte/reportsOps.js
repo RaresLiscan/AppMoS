@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authProvider from '../account/authProvider';
 
 //Clasa asta contine metode statice prin care facem request-uri catre baza de date
 const API_URL = "http://localhost/rapoarte/"
@@ -27,6 +28,20 @@ export default class ReportOperations {
         //         return response;
         //     })
         //     .catch(error => console.error(error));
+    }
+
+    static async getReports(month, year) {
+        return await axios.get(`${API_URL}reports/getReportWithDate/?month=${month}&year=${year}&user_id=${authProvider.getUser().id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+            .then(response => {
+                return response;
+            })
+            .catch(error => {
+                console.error(error);
+            })
     }
 
     static async getFields() {

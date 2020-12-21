@@ -15,9 +15,11 @@ const useStyles = makeStyles((theme) => ({
         flexWrap: 'wrap',
     },
     textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
+        // marginLeft: theme.spacing(1),
+        // marginRight: theme.spacing(1),
+        // width: 200,
+        marginLeft: 10,
+        marginRight: 10,
     },
 
 }))
@@ -25,10 +27,12 @@ const useStyles = makeStyles((theme) => ({
 export default function FormFields({ onChangeFields, field, index, type, editable, deleteItem }) {
 
     const classes = useStyles();
-    const [title, setTitle] = useState('');
-    const [project, setProject] = useState('');
-    const [date, setDate] = useState("");
-    const [workTime, setWorkTime] = useState("");
+    const [title, setTitle] = useState(field.name);
+    const [project, setProject] = useState(field.project);
+    const [date, setDate] = useState(field.date);
+    const [workTime, setWorkTime] = useState(field.time);
+
+    // console.log(field.name);
 
     const updateTitle = (newTitle) => {
         setTitle(newTitle);
@@ -64,11 +68,13 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                 <Grid container spacing={0} alignItems="center">
                     <Grid item xs={12} md={3}>
                         <TextField disabled={!editable} value={title}
+                            className={classes.textField}
                             onChange={(event) => updateTitle(event.target.value)}
                             label="Nume activitate" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField
+                            className={classes.textField}
                             disabled={!editable}
                             value={project}
                             onChange={event => updateProject(event.target.value)}
@@ -78,27 +84,36 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                         {/* <TextField value={date}
                         onChange={event => updateDate(event.target.value)} 
                         label="Data" variant="filled" /> */ }
-                        <form className={classes.container} noValidate style={{display: 'flex', justifyContent:'center'}}>
+                        <div className={classes.container} style={{display: 'flex', justifyContent:'center'}}>
                             <TextField
                                 id="date"
                                 label="Data" variant="filled"
                                 type="date"
                                 defaultValue="2021-01-01"
                                 disabled={!editable}
+                                value={date}
                                 onChange={event => updateDate(event.target.value)}
                                 className={classes.textField}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                             />
-                        </form>
+                        </div>
                     </Grid>
-                    <Grid item xs={12} md={3}>
+                    <Grid item xs={12} md={2}>
                         <TextField
                             value={workTime}
+                            disabled={!editable}
+                            className={classes.textField}
                             onChange={(event) => updateWorkTime(event.target.value)}
                             label="Durata (in minute)" variant="filled" />
                     </Grid>
+                    <Grid item xs={12} md={1}>
+                        <Button disabled={!editable} onClick={() => deleteItem(index, type)}>
+                            <DeleteOutlineOutlinedIcon />
+                        </Button>
+                    </Grid>
+
                 </Grid>
             </form>
         </div>

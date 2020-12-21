@@ -53,7 +53,7 @@ function App() {
         await firebase.auth().onAuthStateChanged(async user => {
             console.log(user);
             if (user) {
-                await updateUser();
+                await updateUser(user.email, user.displayName);
             }
             setUser(true);
         });

@@ -29,7 +29,8 @@ export default class EditareRaport extends React.Component {
             editable: false,
         }
         this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
-        this.selfDevData = [new ReportField()];//toate activitatile pentru dezvoltarea personala
+        this.selfDevData = [];
+        this.report = null;
         // this.update = setInterval(() => {
         //     if (this.state.newChange) {
         //         this.updateUserReport();
@@ -57,9 +58,39 @@ export default class EditareRaport extends React.Component {
         }
     }
 
-    getDbData = () => {
+    getDbData = (month, year) => {
         //TODO: request-uri din sql
-        console.log("Data updated");
+        if (month !== -1 && year !== -1) {
+            // ReportOperations.getReports(month, year)
+            //     .then(async response => {
+            //         // console.log(response);
+            //         if (response.data !== null && response.data.hasOwnProperty("activities") && response.data.activities.length > 0) {
+            //             this.data = [[], []];
+            //             await response.data.activities.map(act => {
+            //                 // console.log(act);
+            //                 this.data[parseInt(act.type)].push(new ReportField(
+            //                     act.id,
+            //                     act.report_id,
+            //                     act.user_id,
+            //                     act.name,
+            //                     act.project,
+            //                     act.date,
+            //                     parseInt(act.time),
+            //                     parseInt(act.type)
+            //                 ));
+            //             });
+            //         }
+            //         else {
+            //             this.data = [[new ReportField()], [new ReportField()]];
+            //         }
+            //         if (response.data.hasOwnProperty("report")) {
+            //             this.report = response.data.report;
+            //         }
+            //         this.setState({ newChange: !this.state.newChange })
+            //         // console.log(this.data);
+            //     })
+            //     .catch(error => console.error(error));
+        }
     }
 
     checkIfEditable = (month, year) => {
@@ -68,25 +99,25 @@ export default class EditareRaport extends React.Component {
         const diffTime = Math.abs(today - reportDate);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         if (diffDays > COMPLETION_DAYS || diffTime < 0) {
-            this.setState({editable: false});
+            this.setState({ editable: false });
         }
         else {
-            this.setState({editable: true});
+            this.setState({ editable: true });
         }
     }
 
     updateMonth = (month) => {
         //update din componentul MonthSelect
+        this.getDbData(month, this.state.year);
+        this.checkIfEditable(month - 1, this.state.year);
         this.setState({ month: month });
-        this.getDbData();
-        this.checkIfEditable(month-1, this.state.year);
     }
-    
+
     updateYear = (year) => {
         //update din componentul MonthSelect
+        this.getDbData(this.state.month, year);
+        this.checkIfEditable(this.state.month - 1, year);
         this.setState({ year: year });
-        this.getDbData();
-        this.checkIfEditable(this.state.month-1, year);
     }
 
     selectMonth = () => {
@@ -97,12 +128,13 @@ export default class EditareRaport extends React.Component {
 
     updateFields = (newField, index, type) => {
         this.data[type][index] = newField;
-        this.setState({newChange: true});
+        this.setState({ newChange: true });
     }
 
     deleteItem = (index, type) => {
-        console.log(index);
         console.log(type);
+        console.log(index);
+        console.log(this.data[type][index]);
         this.data[type].splice(index, 1);
         this.setState({ newChange: true });
         // this.state.data[type].remove(index) sau ceva de genul asta
@@ -114,8 +146,10 @@ export default class EditareRaport extends React.Component {
             <div>
                 {/* pentru fiecare activitate randam un FormField */}
                 {this.data[type].map((actField, index) => {
+                    // console.log(type);
+                    // console.log(actField);
                     return (
-                        <FormFields key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+                        <FormFields key={index} editable={this.state.editable} deleteItem={this.deleteItem} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
                     )
                 })}
             </div>
@@ -135,7 +169,7 @@ export default class EditareRaport extends React.Component {
                     {this.ReportField(type)}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                    <Button onClick={() => this.addNewField(type)}>
+                    <Button disabled={!this.state.editable} onClick={() => this.addNewField(type)}>
                         <AddIcon style={{ backgroundColor: 'white', borderRadius: '50%' }} />
                         <p>Adaugă o activitate</p>
                     </Button>
