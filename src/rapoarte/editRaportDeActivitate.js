@@ -29,7 +29,6 @@ export default class EditareRaport extends React.Component {
             editable: false,
         }
         this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
-        this.selfDevData = [];
         this.report = null;
         // this.update = setInterval(() => {
         //     if (this.state.newChange) {
@@ -40,7 +39,7 @@ export default class EditareRaport extends React.Component {
     }
 
     downloadPdf = () => {
-        generatePDF(this.data[0], this.data[1]);
+        generatePDF(this.data[0], this.data[1], authProvider.getUser().name);
     }
 
     componentWillUnmount() {
@@ -48,48 +47,50 @@ export default class EditareRaport extends React.Component {
         // clearInterval(this.update);
     }
 
-    updateUserReport = () => {
-        if (this.state.newChange) {
-            ReportOperations.addActivity(this.data, this.selfDevData)
+    updateReportDb = () => {
+        ReportOperations.addActivity(this.data)
                 .then(response => {
                     console.log(response);
                 })
                 .catch(error => console.log(error));
+    }
+
+    updateUserReport = () => {
+        if (this.state.newChange) {
+            this.updateReportDb();
         }
     }
 
     getDbData = (month, year) => {
         //TODO: request-uri din sql
         if (month !== -1 && year !== -1) {
-            // ReportOperations.getReports(month, year)
-            //     .then(async response => {
-            //         // console.log(response);
-            //         if (response.data !== null && response.data.hasOwnProperty("activities") && response.data.activities.length > 0) {
-            //             this.data = [[], []];
-            //             await response.data.activities.map(act => {
-            //                 // console.log(act);
-            //                 this.data[parseInt(act.type)].push(new ReportField(
-            //                     act.id,
-            //                     act.report_id,
-            //                     act.user_id,
-            //                     act.name,
-            //                     act.project,
-            //                     act.date,
-            //                     parseInt(act.time),
-            //                     parseInt(act.type)
-            //                 ));
-            //             });
-            //         }
-            //         else {
-            //             this.data = [[new ReportField()], [new ReportField()]];
-            //         }
-            //         if (response.data.hasOwnProperty("report")) {
-            //             this.report = response.data.report;
-            //         }
-            //         this.setState({ newChange: !this.state.newChange })
-            //         // console.log(this.data);
-            //     })
-            //     .catch(error => console.error(error));
+            ReportOperations.getReports(month, year)
+                .then(async response => {
+                    if (response.data.hasOwnProperty("report")) {
+                        this.report = response.data.report;
+                    }
+                    if (response.data !== null && response.data.hasOwnProperty("activities") && response.data.activities.length > 0) {
+                        this.data = [[], []];
+                        await response.data.activities.map(act => {
+                            this.data[parseInt(act.type)].push(new ReportField(
+                                act.id,
+                                act.report_id,
+                                act.user_id,
+                                act.name,
+                                act.project,
+                                act.date,
+                                parseInt(act.time),
+                                parseInt(act.type)
+                            ));
+                        });
+                    }
+                    else {
+                        this.data = [[new ReportField("", this.report.id, authProvider.getUser().id)], [new ReportField("", this.report.id, authProvider.getUser().id, "", "", "", 0, 1)]];
+                    }
+                    this.setState({ newChange: !this.state.newChange })
+                    // console.log(this.data);
+                })
+                .catch(error => console.error(error));
         }
     }
 
@@ -132,12 +133,16 @@ export default class EditareRaport extends React.Component {
     }
 
     deleteItem = (index, type) => {
-        console.log(type);
-        console.log(index);
-        console.log(this.data[type][index]);
         this.data[type].splice(index, 1);
         this.setState({ newChange: true });
+        // console.log(this.data);
         // this.state.data[type].remove(index) sau ceva de genul asta
+    }
+
+    renderField = (index, type, actField) => {
+        return (
+            <FormFields key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+        )
     }
 
     //Field-urile pentru activitati aferente postului
@@ -146,10 +151,10 @@ export default class EditareRaport extends React.Component {
             <div>
                 {/* pentru fiecare activitate randam un FormField */}
                 {this.data[type].map((actField, index) => {
-                    // console.log(type);
-                    // console.log(actField);
                     return (
-                        <FormFields key={index} editable={this.state.editable} deleteItem={this.deleteItem} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+                        <div>
+                            {this.renderField(index, type, actField)}
+                        </div>
                     )
                 })}
             </div>
@@ -158,7 +163,7 @@ export default class EditareRaport extends React.Component {
 
     //Functia apelata cand se apasa butonul de adaugare activitate la activitati
     addNewField = (type) => {
-        this.data[type].push(new ReportField());
+        this.data[type].push(new ReportField("", this.report.id, authProvider.getUser().id, "", "", "", 0, type));
         this.setState({ newChange: true });
     }
 
@@ -195,7 +200,7 @@ export default class EditareRaport extends React.Component {
                                 <h2>Implicare in dezvoltarea personala</h2>
                                 {this.postActivities(1)}
                                 <div>
-                                    <SubmitButtons saveChanges={this.updateUserReport} downloadPdf={this.downloadPdf} />
+                                    <SubmitButtons saveChanges={this.updateReportDb} downloadPdf={this.downloadPdf} />
                                 </div>
                             </div>
                         ) : (<div></div>)}

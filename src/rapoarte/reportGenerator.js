@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import antet from '../img/src_img_antet.png';
 
 // define a generatePDF function that accepts a tickets argument
-const generatePDF = (activities, personalDevelopment) => {
+const generatePDF = (activities, personalDevelopment, name) => {
   // initialize jsPDF
   const doc = new jsPDF();
   
@@ -76,7 +76,7 @@ const generatePDF = (activities, personalDevelopment) => {
 
   doc.setFontSize(10);
   textY = doc.lastAutoTable.finalY + 10;
-  doc.text("Nume si prenume: ", 15, textY);
+  doc.text(`Nume si prenume: ${name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`, 15, textY);
   textY += 3;
   doc.text("Data: ", 15, textY);
   doc.text("Semnatura: ", 162, textY);

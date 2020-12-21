@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -27,28 +27,26 @@ const useStyles = makeStyles((theme) => ({
 export default function FormFields({ onChangeFields, field, index, type, editable, deleteItem }) {
 
     const classes = useStyles();
-    const [title, setTitle] = useState(field.name);
-    const [project, setProject] = useState(field.project);
-    const [date, setDate] = useState(field.date);
-    const [workTime, setWorkTime] = useState(field.time);
+    const [update, setUpdate] = useState(true);
 
-    // console.log(field.name);
+    const deleteThisItem = () => {
+        deleteItem();
+    }
 
     const updateTitle = (newTitle) => {
-        setTitle(newTitle);
+        setUpdate(!update);
         field.setName(newTitle);
         onChangeFields(field, index, type);
     }
 
     const updateProject = (project) => {
-        setProject(project);
+        setUpdate(!update);
         field.setProject(project);
         onChangeFields(field, index, type);
     }
 
     const updateDate = (date) => {
-        console.log (date);
-        setDate(date);
+        setUpdate(!update);
         field.setDate(date);
         onChangeFields(field, index, type);
     }
@@ -56,7 +54,7 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
     const updateWorkTime = (newTime) => {
         let isnum = /^\d+$/.test(newTime);
         if (isnum || newTime.length === 0) {
-            setWorkTime(newTime);
+            setUpdate(!update);
             field.setTime(newTime);
             onChangeFields(field, index, type);
         }
@@ -67,7 +65,7 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
             <form className={classes.root} noValidate autoComplete="off">
                 <Grid container spacing={0} alignItems="center">
                     <Grid item xs={12} md={3}>
-                        <TextField disabled={!editable} value={title}
+                        <TextField disabled={!editable} value={field.name}
                             className={classes.textField}
                             onChange={(event) => updateTitle(event.target.value)}
                             label="Nume activitate" variant="filled" />
@@ -76,7 +74,7 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                         <TextField
                             className={classes.textField}
                             disabled={!editable}
-                            value={project}
+                            value={field.project}
                             onChange={event => updateProject(event.target.value)}
                             label="Nume proiect" variant="filled" />
                     </Grid>
@@ -91,7 +89,7 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                                 type="date"
                                 defaultValue="2021-01-01"
                                 disabled={!editable}
-                                value={date}
+                                value={field.date}
                                 onChange={event => updateDate(event.target.value)}
                                 className={classes.textField}
                                 InputLabelProps={{
@@ -102,14 +100,14 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                     </Grid>
                     <Grid item xs={12} md={2}>
                         <TextField
-                            value={workTime}
+                            value={field.time}
                             disabled={!editable}
                             className={classes.textField}
                             onChange={(event) => updateWorkTime(event.target.value)}
                             label="Durata (in minute)" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={1}>
-                        <Button disabled={!editable} onClick={() => deleteItem(index, type)}>
+                        <Button disabled={!editable} onClick={() => deleteThisItem()}>
                             <DeleteOutlineOutlinedIcon />
                         </Button>
                     </Grid>

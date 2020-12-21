@@ -2,32 +2,28 @@ import axios from 'axios';
 import authProvider from '../account/authProvider';
 
 //Clasa asta contine metode statice prin care facem request-uri catre baza de date
+
+//TODO:
+/*
+
+    1. request la /activities/ cu un array continand obiecte de tip ReportField
+    2. La report fields trebuie setat fiecare report_id si user_id
+
+*/
+
 const API_URL = "http://localhost/rapoarte/"
 export default class ReportOperations {
 
-    static async addActivity(profData, selfDevData) {
-        let dataArray = [];
-
-        profData.map(data => {
-            let dataObj = data;
-            dataObj.type = 0;
-            dataArray.push(dataObj);
-        })
-
-        selfDevData.map(data => {
-            let dataObj = data;
-            dataObj.type = 1;
-            dataArray.push(dataObj);
-        })
+    static async addActivity(data) {
 
         const REQUEST_URL = API_URL + `activities/`;
 
-        console.log(JSON.stringify(dataArray));
-        // return await axios.post(REQUEST_URL, JSON.stringify(dataArray))
-        //     .then(response => {
-        //         return response;
-        //     })
-        //     .catch(error => console.error(error));
+        // console.log(JSON.stringify(data[0].concat(data[1])));
+        return await axios.post(REQUEST_URL, JSON.stringify(data[0].concat(data[1])))
+            .then(response => {
+                return response;
+            })
+            .catch(error => console.error(error));
     }
 
     static async getReports(month, year) {
