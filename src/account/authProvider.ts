@@ -10,7 +10,7 @@ class AuthProvider {
     private _user : Object;
     
     constructor() {
-        this._authenticated = false;
+        this._authenticated = true;
         this._user = new Object();
     }
 

@@ -5,12 +5,22 @@ import Grid from '@material-ui/core/Grid';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import Button from '@material-ui/core/Button';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         margin: 10,
         // width: '25ch',
-    }
-})
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+
+}))
 // let field = new ReportField();
 export default function FormFields({ onChangeFields, field, index, type, editable, deleteItem }) {
 
@@ -33,15 +43,19 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
     }
 
     const updateDate = (date) => {
+        console.log (date);
         setDate(date);
         field.setDate(date);
         onChangeFields(field, index, type);
     }
 
     const updateWorkTime = (newTime) => {
-        setWorkTime(newTime);
-        field.setTime(newTime);
-        onChangeFields(field, index, type);
+        let isnum = /^\d+$/.test(newTime);
+        if (isnum || newTime.length === 0) {
+            setWorkTime(newTime);
+            field.setTime(newTime);
+            onChangeFields(field, index, type);
+        }
     }
 
     return (
@@ -61,21 +75,29 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                             label="Nume proiect" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
-                        <TextField value={date} disabled={!editable}
-                            onChange={event => updateDate(event.target.value)}
-                            label="Data" variant="filled" />
+                        {/* <TextField value={date}
+                        onChange={event => updateDate(event.target.value)} 
+                        label="Data" variant="filled" /> */ }
+                        <form className={classes.container} noValidate style={{display: 'flex', justifyContent:'center'}}>
+                            <TextField
+                                id="date"
+                                label="Data" variant="filled"
+                                type="date"
+                                defaultValue="2021-01-01"
+                                disabled={!editable}
+                                onChange={event => updateDate(event.target.value)}
+                                className={classes.textField}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </form>
                     </Grid>
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={12} md={3}>
                         <TextField
-                            disabled={!editable}
                             value={workTime}
                             onChange={(event) => updateWorkTime(event.target.value)}
                             label="Durata (in minute)" variant="filled" />
-                    </Grid>
-                    <Grid item xs={12} md={1}>
-                        <Button disabled={!editable} onClick={() => deleteItem()}>
-                            <DeleteOutlineOutlinedIcon />
-                        </Button>
                     </Grid>
                 </Grid>
             </form>

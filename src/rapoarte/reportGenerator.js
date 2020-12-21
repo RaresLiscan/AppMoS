@@ -20,17 +20,14 @@ const generatePDF = (activities, personalDevelopment) => {
   // for each ticket pass all its data into an array
   let idx = 1;
   activities.forEach((activity, index) => {
-    if (!(activity.project.length === 0 || activity.name.length === 0 || activity.date.length === 0 || activity.time === 0)) {
-      const devData = [
-        idx,
-        activity.name,
-        activity.project,
-        activity.date,
-        activity.time,
-      ];
-      tableRows.push(devData);
-      idx ++;
-    }
+    const activityData = [
+      index + 1,
+      activity.name,
+      activity.project,
+      activity.date,
+      (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m",
+    ];
+    tableRows.push(activityData);
   });
 
   // define the columns we want and their titles
@@ -41,18 +38,14 @@ const generatePDF = (activities, personalDevelopment) => {
   // for each ticket pass all its data into an array
   idx = 1;
   personalDevelopment.forEach((activity, index) => {
-    if (!(activity.project.length === 0 || activity.name.length === 0 || activity.date.length === 0 || activity.time === 0)) {
-      const devData = [
-        idx,
-        activity.name,
-        activity.project,
-        activity.date,
-        activity.time,
-      ];
-      tableRowsSelfDev.push(devData);
-      idx ++;
-    }
-    
+    const devData = [
+      index + 1,
+      activity.name,
+      activity.project,
+      activity.date,
+      (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m", 
+    ];
+    tableRowsSelfDev.push(devData);
   });
 
 
@@ -82,7 +75,9 @@ const generatePDF = (activities, personalDevelopment) => {
   }
 
   doc.setFontSize(10);
-  textY = doc.lastAutoTable.finalY + 13;
+  textY = doc.lastAutoTable.finalY + 10;
+  doc.text("Nume si prenume: ", 15, textY);
+  textY += 3;
   doc.text("Data: ", 15, textY);
   doc.text("Semnatura: ", 162, textY);
 
