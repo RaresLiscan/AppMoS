@@ -29,12 +29,12 @@ export default class EditareRaport extends React.Component {
         }
         this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
         this.report = null;
-        this.update = setInterval(() => {
-            if (this.state.newChange) {
-                this.updateUserReport();
-                this.setState({newChange: false});
-            }
-        }, 5000);
+        // this.update = setInterval(() => {
+        //     if (this.state.newChange) {
+        //         this.updateUserReport();
+        //         this.setState({newChange: false});
+        //     }
+        // }, 5000);
     }
 
     downloadPdf = () => {
@@ -43,13 +43,26 @@ export default class EditareRaport extends React.Component {
 
     componentWillUnmount() {
         // this.updateUserReport();
-        clearInterval(this.update);
+        // clearInterval(this.update);
     }
 
     updateReportDb = () => {
         ReportOperations.addActivity(this.data)
                 .then(response => {
-                    console.log(response);
+                    this.data = [[], []];
+                    response.data.map((act,index) => {
+                        this.data[parseInt(act.type)].push(new ReportField(
+                            act.id,
+                            act.report_id,
+                            act.user_id,
+                            act.name,
+                            act.project,
+                            act.date.length > 0 ? act.date : "2020-01-01",
+                            parseInt(act.time),
+                            parseInt(act.type)
+                        ));
+                    })
+                    console.log(this.data);
                 })
                 .catch(error => console.log(error));
     }
@@ -57,6 +70,7 @@ export default class EditareRaport extends React.Component {
     updateUserReport = () => {
         if (this.state.newChange) {
             this.updateReportDb();
+            this.setState({newChange:false});
         }
     }
 
@@ -168,7 +182,7 @@ export default class EditareRaport extends React.Component {
 
     //Functia apelata cand se apasa butonul de adaugare activitate la activitati
     addNewField = (type) => {
-        this.data[type].push(new ReportField("", this.report.id, authProvider.getUser().id, "", "", "", 0, type));
+        this.data[type].push(new ReportField("", this.report.id, authProvider.getUser().id, "", "", "2021-01-01", 0, type));
         this.setState({ newChange: true });
     }
 

@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 })
 
 //Cele 2 butoane din josul paginii: salveaza si descarca pdf
-export default function SubmitButtons({ saveChanges, downloadPdf }) {
+export default function SubmitButtons({ saveChanges, downloadPdf, canSave }) {
 
     const classes = useStyles();
 
@@ -27,14 +27,6 @@ export default function SubmitButtons({ saveChanges, downloadPdf }) {
             <div style={{display: 'flex', alignItems: 'flex-start', margin: '1%'}}>
                 <Button onClick={() => downloadPdf()} className={classes.saveButton}>Descarcă raportul</Button>
             </div>
-            {/* <Grid container>
-                <Grid item xs={12} md={6}>
-                    
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    
-                </Grid>
-            </Grid>        */}
         </div>
     )
 }

@@ -36,7 +36,7 @@ class ReportField {
         this.user_id = user_id !== undefined ? user_id : "";
         this.name = name !== undefined ? name : "";
         this.project = project !== undefined ? project : "";
-        this.date = date !== undefined ? date : "";
+        this.date = date !== undefined ? date : "2021-01-01";
         this.time = time !== undefined ? time : 0;
         this.type = type !== undefined ? type : 0;
     }
