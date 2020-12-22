@@ -45,7 +45,6 @@ export default function Authenticate({ authProvider }) {
                     const userModel = new User(user.displayName, user.email);
                     authProviderClass.login(userModel)
                         .then(response => {
-                            console.log(response);
                             history.push('/');
                         })
                         .catch(error => {

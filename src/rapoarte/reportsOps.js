@@ -18,8 +18,6 @@ export default class ReportOperations {
     static async addActivity(data) {
 
         const REQUEST_URL = API_URL + `activities/`;
-
-        // console.log(JSON.stringify(data[0].concat(data[1])));
         return await axios.post(REQUEST_URL, JSON.stringify(data[0].concat(data[1])))
             .then(response => {
                 return response;
@@ -30,7 +28,6 @@ export default class ReportOperations {
     static deleteField = async (id) => {
         return await axios.delete(`${API_URL}activities/?id=${id}`)
             .then(response => {
-                console.log(response);
                 return response;
             })
             .catch(error => {

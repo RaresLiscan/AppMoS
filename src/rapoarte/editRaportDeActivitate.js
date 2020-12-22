@@ -1,10 +1,5 @@
 import React from 'react';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import MonthSelect from "./MonthSelect";
-import Grid from '@material-ui/core/Grid'
 import FormFields from './FormFields';
 import ReportField from './ReportField';
 import AddIcon from '@material-ui/icons/Add';
@@ -102,7 +97,6 @@ export default class EditareRaport extends React.Component {
                         this.data = [[new ReportField("", this.report.id, authProvider.getUser().id)], [new ReportField("", this.report.id, authProvider.getUser().id, "", "", "", 0, 1)]];
                     }
                     this.setState({ newChange: !this.state.newChange })
-                    // console.log(this.data);
                 })
                 .catch(error => console.error(error));
         }
@@ -155,7 +149,6 @@ export default class EditareRaport extends React.Component {
             .catch(error => {
                 console.log(error);
             })
-        // console.log(this.data);
         // this.state.data[type].remove(index) sau ceva de genul asta
     }
 

@@ -12,17 +12,6 @@ class ReportField {
     public time : Number = 0;
     public type : Number = 0;
 
-    // constructor() {
-    //     this.id = "";
-    //     this.report_id = "";
-    //     this.user_id = "";
-    //     this.name = "";
-    //     this.project = "";
-    //     this.date = "";
-    //     this.time = 0;//minutes
-    //     this.type = 1;//work or self development
-    // }
-
     constructor(id?:String|any, 
             report_id?:String|any, 
             user_id?:String|any, 

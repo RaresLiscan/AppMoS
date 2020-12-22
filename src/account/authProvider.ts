@@ -2,7 +2,8 @@ import firebase from "firebase";
 import User from './user.model';
 import axios from 'axios';
 
-const API_URL = "http://localhost/rapoarte/users";
+// const API_URL = "http://localhost/rapoarte/users";
+const API_URL = "https://api.amosed.ro/api/reports/users";
 //clasa in care retinem daca utilizatorul este sau nu autentificat + metodele de login, logout, sign up
 class AuthProvider {
 
