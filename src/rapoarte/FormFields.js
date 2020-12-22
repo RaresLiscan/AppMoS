@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 // let field = new ReportField();
-export default function FormFields({ onChangeFields, field, index, type, editable, deleteItem }) {
+export default function FormFields({ onChangeFields, field, index, type, editable, deleteItem, submitted }) {
 
     const classes = useStyles();
     const [update, setUpdate] = useState(true);
@@ -66,12 +66,16 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                 <Grid container spacing={0} alignItems="center">
                     <Grid item xs={12} md={3}>
                         <TextField disabled={!editable} value={field.name}
+                            error={editable && submitted && field.name.length === 0}
+                            helperText="Câmp obligatoriu"
                             className={classes.textField}
                             onChange={(event) => updateTitle(event.target.value)}
                             label="Nume activitate" variant="filled" />
                     </Grid>
                     <Grid item xs={12} md={3}>
                         <TextField
+                            error={editable && submitted && field.project.length === 0}
+                            helperText={"Câmp obligatoriu"}
                             className={classes.textField}
                             disabled={!editable}
                             value={field.project}
@@ -86,6 +90,7 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                             <TextField
                                 id="date"
                                 label="Data" variant="filled"
+                                helperText="Câmp obligatoriu"
                                 type="date"
                                 defaultValue="2021-01-01"
                                 disabled={!editable}
@@ -100,6 +105,8 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                     </Grid>
                     <Grid item xs={12} md={2}>
                         <TextField
+                            error={editable && submitted && (field.time.length === 0 || parseInt(field.time) === 0)}
+                            helperText="Câmp obligatoriu"
                             value={field.time}
                             disabled={!editable}
                             className={classes.textField}

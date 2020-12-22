@@ -11,7 +11,8 @@ import authProvider from '../account/authProvider';
 
 */
 
-const API_URL = "http://localhost/rapoarte/";
+// const API_URL = "http://localhost/rapoarte/";
+const API_URL = "https://api.amosed.ro/api/reports/";
 export default class ReportOperations {
 
     static async addActivity(data) {

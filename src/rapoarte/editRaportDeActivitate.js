@@ -26,6 +26,7 @@ export default class EditareRaport extends React.Component {
             month: -1,
             newChange: false,//pentru auto-updates, variabila ne indica daca exista vreo schimbare noua
             editable: false,
+            submitted: false,
         }
         this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
         this.report = null;
@@ -38,7 +39,7 @@ export default class EditareRaport extends React.Component {
     }
 
     downloadPdf = () => {
-        generatePDF(this.data[0], this.data[1], authProvider.getUser().name);
+        generatePDF(this.data[0], this.data[1], authProvider.getUser().name, this.state.month);
     }
 
     componentWillUnmount() {
@@ -47,6 +48,7 @@ export default class EditareRaport extends React.Component {
     }
 
     updateReportDb = () => {
+        this.setState({submitted: true});
         ReportOperations.addActivity(this.data)
                 .then(response => {
                     this.data = [[], []];
@@ -62,7 +64,6 @@ export default class EditareRaport extends React.Component {
                             parseInt(act.type)
                         ));
                     })
-                    console.log(this.data);
                 })
                 .catch(error => console.log(error));
     }
@@ -160,7 +161,7 @@ export default class EditareRaport extends React.Component {
 
     renderField = (index, type, actField) => {
         return (
-            <FormFields key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+            <FormFields submitted={this.state.submitted} key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
         )
     }
 
@@ -183,7 +184,7 @@ export default class EditareRaport extends React.Component {
     //Functia apelata cand se apasa butonul de adaugare activitate la activitati
     addNewField = (type) => {
         this.data[type].push(new ReportField("", this.report.id, authProvider.getUser().id, "", "", "2021-01-01", 0, type));
-        this.setState({ newChange: true });
+        this.setState({ newChange: true, submitted: false });
     }
 
     postActivities = (type) => {

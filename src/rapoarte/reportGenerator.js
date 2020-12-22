@@ -3,11 +3,26 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 // Date Fns is used to format the dates we receive
 // from our API call
-import { format } from "date-fns";
-import antet from '../img/src_img_antet.png';
+import antet from '../img/antet.png';
+
+const months = [
+  "",
+  "Ianuarie",
+  "Februarie",
+  "Martie",
+  "Aprilie",
+  "Mai",
+  "Iunie",
+  "Iulie",
+  "August",
+  "Septembrie",
+  "Octombrie",
+  "Noiembrie",
+  "Decembrie"
+]
 
 // define a generatePDF function that accepts a tickets argument
-const generatePDF = (activities, personalDevelopment, name) => {
+const generatePDF = (activities, personalDevelopment, name, month) => {
   // initialize jsPDF
   const doc = new jsPDF();
   
@@ -20,14 +35,16 @@ const generatePDF = (activities, personalDevelopment, name) => {
   // for each ticket pass all its data into an array
   let idx = 1;
   activities.forEach((activity, index) => {
-    const activityData = [
-      index + 1,
-      activity.name,
-      activity.project,
-      activity.date,
-      (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m",
-    ];
-    tableRows.push(activityData);
+    if (activity.name.length > 0 && activity.project.length > 0 && parseInt(activity.time) > 0) {
+      const activityData = [
+        index + 1,
+        activity.name,
+        activity.project,
+        activity.date.substring(8, 10) + "/" + activity.date.substring(5, 7) + "/" + activity.date.substring(0, 4),
+        (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m",
+      ];
+      tableRows.push(activityData);
+    }
   });
 
   // define the columns we want and their titles
@@ -38,18 +55,20 @@ const generatePDF = (activities, personalDevelopment, name) => {
   // for each ticket pass all its data into an array
   idx = 1;
   personalDevelopment.forEach((activity, index) => {
-    const devData = [
-      index + 1,
-      activity.name,
-      activity.project,
-      activity.date,
-      (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m", 
-    ];
-    tableRowsSelfDev.push(devData);
+    if (activity.name.length > 0 && activity.project.length > 0 && parseInt(activity.time) > 0) {
+      const devData = [
+        index + 1,
+        activity.name,
+        activity.project,
+        activity.date.substring(8, 10) + "/" + activity.date.substring(5, 7) + "/" + activity.date.substring(0, 4),
+        (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m", 
+      ];
+      tableRowsSelfDev.push(devData);
+    }
   });
 
 
-  doc.addImage(antet, "PNG", 17, 10, 175, 23);
+  doc.addImage(antet, "PNG", 17, 10, 178, 26);
   doc.text("Raport de activitate", 80, 45);
   doc.text("Nr. ______/_______", 80, 53);
   doc.setFontSize(12);
@@ -75,11 +94,20 @@ const generatePDF = (activities, personalDevelopment, name) => {
   }
 
   doc.setFontSize(10);
-  textY = doc.lastAutoTable.finalY + 10;
+  textY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 78;
+  let totalHours = 0;
+  activities.map(act => {
+    totalHours += parseInt(act.time);
+  });
+  personalDevelopment.map(act => {
+    totalHours += parseInt(act.time);
+  });
+
   doc.text(`Nume si prenume: ${name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`, 15, textY);
-  textY += 3;
+  doc.text("Semnatura: ", 150, textY);
+  doc.text(`Total ore: ${Math.floor(totalHours/60)}h ${totalHours%60}m`, 15, textY + 4);
+  textY += 8;
   doc.text("Data: ", 15, textY);
-  doc.text("Semnatura: ", 162, textY);
 
 
   
@@ -89,7 +117,7 @@ const generatePDF = (activities, personalDevelopment, name) => {
   // ticket title. and margin-top + margin-left
   // doc.text("Closed tickets within the last one month.", 14, 15);
   // we define the name of our PDF file.
-  doc.save(`report_${dateStr}.pdf`);
+  doc.save(`Raport_${name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}_${months[month]}.pdf`);
 };
 
 export default generatePDF;
