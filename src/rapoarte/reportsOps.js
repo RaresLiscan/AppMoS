@@ -26,6 +26,18 @@ export default class ReportOperations {
             .catch(error => console.error(error));
     }
 
+    static deleteField = async (id) => {
+        return await axios.delete(`${API_URL}activities/?id=${id}`)
+            .then(response => {
+                console.log(response);
+                return response;
+            })
+            .catch(error => {
+                console.log(error);
+                return error;
+            })
+    }
+
     static async getReports(month, year) {
         return await axios.get(`${API_URL}reports/getReportWithDate/?month=${month}&year=${year}&user_id=${authProvider.getUser().id}`, {
             headers: {

@@ -14,7 +14,6 @@ import generatePDF from './reportGenerator';
 import SubmitButtons from './SubmitButtons';
 import ReportOperations from './reportsOps';
 import authProvider from '../account/authProvider';
-import { createFalse } from 'typescript';
 
 const COMPLETION_DAYS = 40;
 
@@ -30,12 +29,12 @@ export default class EditareRaport extends React.Component {
         }
         this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
         this.report = null;
-        // this.update = setInterval(() => {
-        //     if (this.state.newChange) {
-        //         this.updateUserReport();
-        //         this.setState({newChange: false});
-        //     }
-        // }, 5000);
+        this.update = setInterval(() => {
+            if (this.state.newChange) {
+                this.updateUserReport();
+                this.setState({newChange: false});
+            }
+        }, 5000);
     }
 
     downloadPdf = () => {
@@ -44,7 +43,7 @@ export default class EditareRaport extends React.Component {
 
     componentWillUnmount() {
         // this.updateUserReport();
-        // clearInterval(this.update);
+        clearInterval(this.update);
     }
 
     updateReportDb = () => {
@@ -78,7 +77,7 @@ export default class EditareRaport extends React.Component {
                                 act.user_id,
                                 act.name,
                                 act.project,
-                                act.date,
+                                act.date.length > 0 ? act.date : "2020-01-01",
                                 parseInt(act.time),
                                 parseInt(act.type)
                             ));
@@ -133,8 +132,14 @@ export default class EditareRaport extends React.Component {
     }
 
     deleteItem = (index, type) => {
-        this.data[type].splice(index, 1);
-        this.setState({ newChange: true });
+        ReportOperations.deleteField(this.data[type][index].id)
+            .then(() => {
+                this.data[type].splice(index, 1);
+                this.setState({ newChange: true });
+            })
+            .catch(error => {
+                console.log(error);
+            })
         // console.log(this.data);
         // this.state.data[type].remove(index) sau ceva de genul asta
     }
