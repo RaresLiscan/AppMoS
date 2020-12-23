@@ -34,6 +34,7 @@ export default class EditareRaport extends React.Component {
     }
 
     downloadPdf = () => {
+        this.updateReportDb();
         generatePDF(this.data[0], this.data[1], authProvider.getUser().name, this.state.month);
     }
 
@@ -154,7 +155,7 @@ export default class EditareRaport extends React.Component {
 
     renderField = (index, type, actField) => {
         return (
-            <FormFields submitted={this.state.submitted} key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
+            <FormFields key={`${index}/${type}`} submitted={this.state.submitted} key={index} editable={this.state.editable} deleteItem={() => this.deleteItem(index, type)} onChangeFields={this.updateFields} index={index} field={actField} type={type} />
         )
     }
 

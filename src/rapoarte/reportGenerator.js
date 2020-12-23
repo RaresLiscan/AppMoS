@@ -96,11 +96,15 @@ const generatePDF = (activities, personalDevelopment, name, month) => {
   doc.setFontSize(10);
   textY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 78;
   let totalHours = 0;
-  activities.map(act => {
-    totalHours += parseInt(act.time);
+  activities.map(activity => {
+    if (activity.name.length > 0 && activity.project.length > 0 && parseInt(activity.time) > 0) {
+      totalHours += parseInt(activity.time);
+    }
   });
-  personalDevelopment.map(act => {
-    totalHours += parseInt(act.time);
+  personalDevelopment.map(activity => {
+    if (activity.name.length > 0 && activity.project.length > 0 && parseInt(activity.time) > 0) {
+      totalHours += parseInt(activity.time);
+    }
   });
 
   doc.text(`Nume si prenume: ${name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`, 15, textY);
