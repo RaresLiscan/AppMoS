@@ -38,8 +38,8 @@ const generatePDF = (activities, personalDevelopment, name, month) => {
     if (activity.name.length > 0 && activity.project.length > 0 && parseInt(activity.time) > 0) {
       const activityData = [
         index + 1,
-        activity.name,
-        activity.project,
+        activity.name.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+        activity.project.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
         activity.date.substring(8, 10) + "/" + activity.date.substring(5, 7) + "/" + activity.date.substring(0, 4),
         (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m",
       ];
@@ -58,8 +58,8 @@ const generatePDF = (activities, personalDevelopment, name, month) => {
     if (activity.name.length > 0 && activity.project.length > 0 && parseInt(activity.time) > 0) {
       const devData = [
         index + 1,
-        activity.name,
-        activity.project,
+        activity.name.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
+        activity.project.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
         activity.date.substring(8, 10) + "/" + activity.date.substring(5, 7) + "/" + activity.date.substring(0, 4),
         (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m", 
       ];
