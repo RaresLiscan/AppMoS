@@ -10,7 +10,7 @@ import SubmitButtons from './SubmitButtons';
 import ReportOperations from './reportsOps';
 import authProvider from '../account/authProvider';
 
-const COMPLETION_DAYS = 40;
+const COMPLETION_DAYS = 45;
 
 export default class EditareRaport extends React.Component {
 
@@ -72,7 +72,6 @@ export default class EditareRaport extends React.Component {
     }
 
     getDbData = (month, year) => {
-        //TODO: request-uri din sql
         if (month !== -1 && year !== -1) {
             ReportOperations.getReports(month, year)
                 .then(async response => {

@@ -4,11 +4,19 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import Button from '@material-ui/core/Button';
+import moment from "moment";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: 10,
         // width: '25ch',
+    },
+    inputRoot: {
+        // position: "relative"
+    },
+    picker: {
+        backgroundColor: 'gray',
     },
     // container: {
     //     display: 'flex',
@@ -26,10 +34,22 @@ const useStyles = makeStyles((theme) => ({
         // marginLeft: 10,
         // marginRight: 10,
         width: '90%',
-        
-    }
+    },
+    display: {
+        // position: "absolute",
+        // top: 2,
+        // left: 0,
+        // bottom: 2,
+        background: "white",
+        pointerEvents: "none",
+        right: 50,
+        display: "flex",
+        alignItems: "center"
+    },
+    input: {}
 
 }))
+
 // let field = new ReportField();
 export default function FormFields({ onChangeFields, field, index, type, editable, deleteItem, submitted }) {
 
@@ -55,9 +75,10 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
     }
 
     const updateDate = (date) => {
-        setUpdate(!update);
+        // const newDate = date.substring(6, 10) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
         field.setDate(date);
         onChangeFields(field, index, type);
+        setUpdate(!update);
     }
 
     const updateWorkTime = (newTime) => {
@@ -67,6 +88,14 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
             field.setTime(newTime);
             onChangeFields(field, index, type);
         }
+    }
+
+    const FormTextField=(props) => {
+        return <TextField {...props} variant={"filled"}
+                          helperText={"Obligatoriu"}
+                          disabled={!editable}
+                          className={classes.dateField}
+                          label={"Data"}/>
     }
 
     return (
@@ -100,12 +129,26 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                             defaultValue="2021-01-01"
                             disabled={!editable}
                             value={field.date}
+                            // formatDate={date => moment(date).format('DD/MM/YYYY')}
                             onChange={event => updateDate(event.target.value)}
                             className={classes.dateField}
                             // InputLabelProps={{
                             //     shrink: true,
+                            //     // placeholder: "dd/mm/yyyy",
                             // }}
                         />
+                        {/*<div className={classes.picker}>*/}
+                        {/*    <KeyboardDatePicker*/}
+                        {/*        // clearable*/}
+                        {/*        value={field.date}*/}
+                        {/*        placeholder="dd/MM/YYYY"*/}
+                        {/*        onChange={(date, value) => updateDate(value)}*/}
+                        {/*        format="dd/MM/yyyy"*/}
+                        {/*        variant={"inline"}*/}
+                        {/*        // TextFieldComponent={FormTextField}*/}
+                        {/*        // className={classes.picker}*/}
+                        {/*    />*/}
+                        {/*</div>*/}
                     </Grid>
                     <Grid item xs={12} md={2}>
                         <TextField

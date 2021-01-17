@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {
     BrowserRouter as Router,
@@ -15,6 +15,12 @@ import firebase from "firebase";
 import SelectareActivitate from "./selectareActivitate";
 import authProviderClass from './account/authProvider';
 import User from './account/user.model';
+import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
+import {roRO} from '@material-ui/core/locale';
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+
+const theme = createMuiTheme({}, roRO);
 
 async function initFirebase() {
     var firebaseConfig = {
@@ -46,7 +52,7 @@ function App() {
                 authProviderClass.setUserState(user, true);
             })
             .catch(error => console.log(error));
-        
+
     }
 
     const checkUserSession = async () => {
@@ -78,30 +84,32 @@ function App() {
     }
 
     return (
-        <div>
-            <Router>
-                <Menu/>
-                <Switch>
-                    <ProtectedRoute path={"/reportEdit"} exact>
-                        <EditareRaport/>
-                    </ProtectedRoute>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <div>
+                <Router>
+                    <Menu/>
+                    <Switch>
+                        <ProtectedRoute path={"/reportEdit"} exact>
+                            <EditareRaport/>
+                        </ProtectedRoute>
 
-                    <ProtectedRoute path={"/selectActivity"} exact>
-                        <SelectareActivitate/>
-                    </ProtectedRoute>
+                        <ProtectedRoute path={"/selectActivity"} exact>
+                            <SelectareActivitate/>
+                        </ProtectedRoute>
 
-                    <Route path={"/login"} exact>
-                        <Authenticate authProvider={provider} />
-                    </Route>
+                        <Route path={"/login"} exact>
+                            <Authenticate authProvider={provider}/>
+                        </Route>
 
-                    <Route path="/:activityId" component={Registration} exact />
+                        <Route path="/:activityId" component={Registration} exact/>
 
-                    <ProtectedRoute>
-                        <Home />
-                    </ProtectedRoute>
-                </Switch>
-            </Router>
-        </div>
+                        <ProtectedRoute>
+                            <Home/>
+                        </ProtectedRoute>
+                    </Switch>
+                </Router>
+            </div>
+        </MuiPickersUtilsProvider>
     );
 }
 

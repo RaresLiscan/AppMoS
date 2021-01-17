@@ -19,7 +19,7 @@ const months = [
   "Octombrie",
   "Noiembrie",
   "Decembrie"
-]
+];
 
 // define a generatePDF function that accepts a tickets argument
 const generatePDF = (activities, personalDevelopment, name, month) => {
@@ -60,7 +60,7 @@ const generatePDF = (activities, personalDevelopment, name, month) => {
         index + 1,
         activity.name.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
         activity.project.normalize("NFD").replace(/[\u0300-\u036f]/g, ""),
-        activity.date.substring(8, 10) + "/" + activity.date.substring(5, 7) + "/" + activity.date.substring(0, 4),
+        activity.date.toString().substring(8, 10) + "/" + activity.date.substring(5, 7) + "/" + activity.date.substring(0, 4),
         (parseInt(activity.time/60)).toString() + "h " + (parseInt(activity.time%60)).toString() + "m", 
       ];
       tableRowsSelfDev.push(devData);
@@ -68,29 +68,84 @@ const generatePDF = (activities, personalDevelopment, name, month) => {
   });
 
 
-  doc.addImage(antet, "PNG", 17, 10, 178, 26);
+  doc.addImage(antet, "PNG", 17, 2, 178, 38);
   doc.text("Raport de activitate", 80, 45);
   doc.text("Nr. ______/_______", 80, 53);
   doc.setFontSize(12);
   // startY is basically margin-top
   if (tableRows.length > 0) {
     doc.text("Activitati aferente postului", 15, 68);
-    doc.autoTable(tableColumn, tableRows, { startY: 70, theme: 'plain', headStyles: {
-      fillColor: "#000000",
-      textColor: 'white',
-      fontSize: 12
-    } });
+    doc.autoTable(tableColumn, tableRows, {
+      startY: 70,
+      styles: {
+        overflow: "linebreak",
+        columnWidth: 'wrap',
+      },
+      theme: 'plain',
+      headStyles: {
+        fillColor: "#000000",
+        textColor: 'white',
+        fontSize: 12
+      },
+      columnStyles: {
+        text: {
+          columnWidth: "wrap",
+        },
+        0: {
+          columnWidth: 20
+        },
+        1: {
+          columnWidth: 50
+        },
+        2: {
+          columnWidth: 50
+        },
+        3: {
+          columnWidth: 35
+        },
+        4: {
+          columnWidth: 25
+        },
+      }
+    });
   }
 
   let textY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 9 : 68;
 
   if (tableRowsSelfDev.length > 0) {
     doc.text("Implicare in dezvoltarea personala", 15, textY);
-    doc.autoTable(tableColumnSelfDev, tableRowsSelfDev, {startY: textY + 2, theme: 'plain', headStyles: {
-      fillColor: "#00000",
-      textColor: 'white',
-      fontSize: 12,
-    } });
+    doc.autoTable(tableColumnSelfDev, tableRowsSelfDev, {
+      startY: textY + 2,
+      theme: 'plain',
+      headStyles: {
+        fillColor: "#00000",
+        textColor: 'white',
+        fontSize: 12,
+      },
+      styles: {
+        overflow: "linebreak",
+        columnWidth: 'wrap',
+      },
+      columnStyles: {
+        text: {
+          columnWidth: "wrap",
+        },
+        0: {
+          columnWidth: 20
+        },
+        1: {
+          columnWidth: 50
+        },
+        2: {
+          columnWidth: 50
+        },
+        3: {
+          columnWidth: 35
+        },
+        4: {
+          columnWidth: 25
+        },
+      } });
   }
 
   doc.setFontSize(10);
