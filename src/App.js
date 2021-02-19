@@ -5,14 +5,14 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Registration from './registration';
+import Registration from './cardinal/registration';
 import Home from './home';
 import Menu from "./sections/menu";
 import Authenticate from "./account/authenticate";
 import ProtectedRoute from "./account/ProtectedRoute";
 import EditareRaport from "./rapoarte/editRaportDeActivitate";
 import firebase from "firebase";
-import SelectareActivitate from "./selectareActivitate";
+import SelectareActivitate from "./cardinal/selectareActivitate";
 import authProviderClass from './account/authProvider';
 import User from './account/user.model';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
@@ -57,7 +57,6 @@ function App() {
 
     const checkUserSession = async () => {
         await firebase.auth().onAuthStateChanged(async user => {
-            console.log(user);
             if (user) {
                 await updateUser(user.email, user.displayName);
             }

@@ -3,11 +3,9 @@ import authProvider from '../account/authProvider';
 
 //Clasa asta contine metode statice prin care facem request-uri catre baza de date
 
-//TODO:
 /*
-
-    1. request la /activities/ cu un array continand obiecte de tip ReportField
-    2. La report fields trebuie setat fiecare report_id si user_id
+    TODO 1: Request la /activities/ cu un array continand obiecte de tip ReportField
+    TODO 2: La report fields trebuie setat fiecare report_id si user_id
 
 */
 

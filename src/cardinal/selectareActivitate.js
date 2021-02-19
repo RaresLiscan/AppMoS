@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {colors} from "./colors";
+import {colors} from "../colors";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
 
