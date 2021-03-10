@@ -33,7 +33,7 @@ export default function Home() {
     return (
         //TODO: navigare catre acele pagini
         <div>
-            <h1 style={{textAlign: 'center', color: 'white'}}>AppMoS ED</h1>
+            <h1 style={{textAlign: 'center', color: 'white'}}>AppMoS</h1>
             <Grid container spacing={0}>
                 <Grid item xs={12} lg={6} className={classes.gridItem}>
                     <Paper variant={"outlined"} elevation={3} className={classes.paper}>

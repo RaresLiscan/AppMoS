@@ -19,6 +19,7 @@ import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import {roRO} from '@material-ui/core/locale';
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import GeneralForm from "./cardinal/generalForm";
 
 const theme = createMuiTheme({}, roRO);
 
@@ -88,6 +89,11 @@ function App() {
                 <Router>
                     <Menu/>
                     <Switch>
+
+                        <Route path={"/activity/:activityId"}>
+                            <GeneralForm />
+                        </Route>
+
                         <ProtectedRoute path={"/reportEdit"} exact>
                             <EditareRaport/>
                         </ProtectedRoute>
@@ -100,7 +106,7 @@ function App() {
                             <Authenticate authProvider={provider}/>
                         </Route>
 
-                        <Route path="/:activityId" component={Registration} exact/>
+                        {/*<Route path="/:activityId" component={Registration} exact/>*/}
 
                         <ProtectedRoute>
                             <Home/>

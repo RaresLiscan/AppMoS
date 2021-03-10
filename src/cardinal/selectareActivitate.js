@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import {colors} from "../colors";
 import {Link} from "react-router-dom";
 import {Button} from "@material-ui/core";
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles({
     paper: {
@@ -38,6 +39,11 @@ export default function SelectareActivitate() {
     const classes = useStyles();
 
     //TODO: Introduce numarul activitatii si il duce la pagina cu activitatea
+    const history = useHistory();
+
+    const setActivityId = (id) => {
+        history.push(`/activity/${id}`);
+    }
 
     return (
         <div style={{display: 'flex', justifyContent: 'center'}}>
@@ -48,7 +54,7 @@ export default function SelectareActivitate() {
                     <TextField id="filled-basic" label="Codul evenimentului..." variant="filled" className={classes.form} onChange={event => setActId(event.currentTarget.value)} />
                 </form>
                 <Link to={`/${actId}`} style={{display: 'flex', justifyContent: 'center', textDecoration: 'none'}}>
-                    <Button className={classes.button}>Cauta</Button>
+                    <Button className={classes.button} onClick={() => setActivityId(actId)}>Cauta</Button>
                 </Link>
             </Paper>
         </div>
