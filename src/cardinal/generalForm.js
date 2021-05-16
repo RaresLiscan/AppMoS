@@ -5,6 +5,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {colors} from "../colors";
+import GoogleButton from 'react-google-button'
 
 const useStyles = makeStyles({
     root: {
@@ -18,6 +19,14 @@ const useStyles = makeStyles({
             color: colors.white
         }
     },
+    googleButton: {
+        backgroundColor: "#dbdbdb",
+        color: colors.blue5,
+        "&:hover": {
+            backgroundColor: colors.blue5,
+            color: colors.white
+        }
+    }
 })
 
 export default function GeneralForm() {
@@ -102,6 +111,14 @@ export default function GeneralForm() {
                                 className={classes.button}>
                             Înscrie-te!
                         </Button>
+                    </div>
+                    <div>
+                        <p>Sau</p>
+                        <GoogleButton
+                            type={"light"}
+                            onClick={() => register()}
+                            label={"Logheaza-te cu Google"}
+                        />
                     </div>
                 </form>
             </div>

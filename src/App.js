@@ -32,7 +32,7 @@ async function initFirebase() {
         storageBucket: "moseadori.appspot.com",
         messagingSenderId: "903421930963",
         appId: "1:903421930963:web:f8e2574a6ecb721cba5326",
-        measurementId: "G-9N3EMLG97F"
+        measurementId: "G-9N3EMLG97F",
     };
     // Initialize Firebase
     await firebase.initializeApp(firebaseConfig);
