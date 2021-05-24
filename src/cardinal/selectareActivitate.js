@@ -53,7 +53,7 @@ export default function SelectareActivitate() {
                 <form className={classes.root} noValidate autoComplete="off" style={{textAlign: 'center'}}>
                     <TextField id="filled-basic" label="Codul evenimentului..." variant="filled" className={classes.form} onChange={event => setActId(event.currentTarget.value)} />
                 </form>
-                <Link to={`/${actId}`} style={{display: 'flex', justifyContent: 'center', textDecoration: 'none'}}>
+                <Link to={`/activity/${actId}`} style={{display: 'flex', justifyContent: 'center', textDecoration: 'none'}}>
                     <Button className={classes.button} onClick={() => setActivityId(actId)}>Cauta</Button>
                 </Link>
             </Paper>

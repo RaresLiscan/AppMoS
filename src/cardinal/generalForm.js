@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import {colors} from "../colors";
-import GoogleButton from 'react-google-button'
+import GoogleButton from 'react-google-button';
+import {useParams} from 'react-router-dom';
+import * as EmailValidator from 'email-validator';
+import axios from 'axios';
+import firebase from 'firebase';
 
 const useStyles = makeStyles({
     root: {
@@ -29,12 +33,32 @@ const useStyles = makeStyles({
     }
 })
 
-export default function GeneralForm() {
+const API_URL = "http://localhost:8080";
 
+export default function GeneralForm({ authProvider }) {
+
+    const {id} = useParams();
+    const [project, setProject] = useState({});
     const [gdpr, setGdpr] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+
+
+    const getProject = async() => {
+        await fetch(`${API_URL}/projects/${id}`)
+            .then(res => res.json())
+            .then(response => {
+                setProject(response);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+
+    useEffect(() => {
+        getProject();
+    }, [])
 
     const classes = useStyles();
 
@@ -60,8 +84,67 @@ export default function GeneralForm() {
         )
     }
 
+    //If the user is completing the form REQUEST http://localhost:8080/participants/newUser
     const register = () => {
+        //Email Validation
+        if (!gdpr) {
+            alert("Pentru a te înregistra avem nevoie de acordul tău pentru prelucrarea datelor cu caracter personal.");
+        }
+        if (EmailValidator.validate(email)) {
+            const requestBody = {
+                projectId: project.id,
+                phoneNumber: phone,
+                email: email,
+                gdpr: gdpr,
+            };
+            console.log(requestBody);
+            axios.post(`${API_URL}/participants/newUser`, JSON.stringify(requestBody), {headers: {
+                "Content-Type": "application/json"
+            }})
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
+        else {
+            alert("Email-ul nu este corect");
+        }
+    }
 
+    //With google login, REQUEST http://localhost:8080/participants/moseador
+    const googleLogin = () => {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                return firebase.auth().signInWithPopup(authProvider).then(async function (result) {
+                    // This gives you a Google Access Token. You can use it to access the Google API.
+                    // var token = result.credential.accessToken;
+                    // The signed-in user info.
+                    var user = result.user;
+                    await axios.post(`${API_URL}/participants/moseador`, JSON.stringify({
+                        userEmail: user.email,
+                        projectId: project.id,
+                        userName: user.displayName,
+                    }), {
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        })
+                }).catch(function (error) {
+                    console.error(error);
+                    throw new Error(error);
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     const handleGdprChange = () => {
@@ -116,8 +199,8 @@ export default function GeneralForm() {
                         <p>Sau</p>
                         <GoogleButton
                             type={"light"}
-                            onClick={() => register()}
-                            label={"Logheaza-te cu Google"}
+                            onClick={() => googleLogin()}
+                            label={"Logheaza-te cu G Suite"}
                         />
                     </div>
                 </form>

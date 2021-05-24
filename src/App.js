@@ -5,7 +5,7 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Registration from './cardinal/registration';
+import Registration from './cardinal/old/registration';
 import Home from './home';
 import Menu from "./sections/menu";
 import Authenticate from "./account/authenticate";
@@ -68,11 +68,11 @@ function App() {
     useEffect(() => {
         if (!init) {
             initFirebase();
-            var authProvider = new firebase.auth.GoogleAuthProvider();
-            authProvider.setCustomParameters({
-                'login_hint': 'user@amosed.ro',
-                'hd': 'amosed.ro',
-            })
+            // var authProvider = new firebase.auth.GoogleAuthProvider();
+            // authProvider.setCustomParameters({
+            //     'login_hint': 'user@amosed.ro',
+            //     'hd': 'amosed.ro',
+            // })
             setAuthProvider(new firebase.auth.GoogleAuthProvider());
             setInit(true);
             checkUserSession();
@@ -90,8 +90,8 @@ function App() {
                     <Menu/>
                     <Switch>
 
-                        <Route path={"/activity/:activityId"}>
-                            <GeneralForm />
+                        <Route path={"/activity/:id"}>
+                            <GeneralForm authProvider={provider} />
                         </Route>
 
                         <ProtectedRoute path={"/reportEdit"} exact>

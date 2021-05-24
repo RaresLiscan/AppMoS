@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoogleLogout } from 'react-google-login';
-import { cliendId } from '../configs';
+import { cliendId } from '../../configs';
 
 export default function Logout() {
     const onSuccess = () => {

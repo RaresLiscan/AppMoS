@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import Login from './login';
-import logoComplet from '../img/logo-complet.png';
+import logoComplet from '../../img/logo-complet.png';
 
 
 const API_URL = "http://localhost/amos-api/api";
