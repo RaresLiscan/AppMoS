@@ -20,6 +20,7 @@ import {roRO} from '@material-ui/core/locale';
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import GeneralForm from "./cardinal/generalForm";
+import SuccessScreen from './cardinal/SuccessScreen';
 
 const theme = createMuiTheme({}, roRO);
 
@@ -90,6 +91,9 @@ function App() {
                     <Menu/>
                     <Switch>
 
+                        <Route path="/activity/success">
+                            <SuccessScreen />
+                        </Route>
                         <Route path={"/activity/:id"}>
                             <GeneralForm authProvider={provider} />
                         </Route>

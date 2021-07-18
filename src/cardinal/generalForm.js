@@ -10,6 +10,7 @@ import {useParams} from 'react-router-dom';
 import * as EmailValidator from 'email-validator';
 import axios from 'axios';
 import firebase from 'firebase';
+import {useHistory} from 'react-router-dom';
 
 const useStyles = makeStyles({
     root: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     }
 })
 
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8081";
 
 export default function GeneralForm({ authProvider }) {
 
@@ -43,17 +44,33 @@ export default function GeneralForm({ authProvider }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
+    const history = useHistory();
 
 
     const getProject = async() => {
-        await fetch(`${API_URL}/projects/${id}`)
-            .then(res => res.json())
-            .then(response => {
-                setProject(response);
-            })
-            .catch(error => {
-                console.error(error);
-            })
+        if (!isNaN(id)) {
+            await fetch(`${API_URL}/projects/register/${id}`)
+                .then(res => res.json())
+                .then(response => {
+                    console.log(response);
+                    setProject(response);
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
+        else {
+            await fetch(`${API_URL}/projects/${id}`) 
+                .then(res => res.json())
+                .then(response => {
+                    console.log(response);
+                    setProject(response);
+                })
+                .catch(error => {
+                    console.error(error);
+                })
+        }
+        
     }
 
     useEffect(() => {
@@ -96,6 +113,7 @@ export default function GeneralForm({ authProvider }) {
                 phoneNumber: phone,
                 email: email,
                 gdpr: gdpr,
+                name: name
             };
             console.log(requestBody);
             axios.post(`${API_URL}/participants/newUser`, JSON.stringify(requestBody), {headers: {
@@ -103,6 +121,7 @@ export default function GeneralForm({ authProvider }) {
             }})
                 .then(res => {
                     console.log(res);
+                    history.push("/activity/success");
                 })
                 .catch(error => {
                     console.error(error);
