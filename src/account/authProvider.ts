@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // const API_URL = "http://localhost/rapoarte/users";
 // const API_URL = "https://api.amosed.ro/api/reports/users";
-const API_URL = "https://localhost:8081/users";
+const API_URL = "http://localhost:8081/users";
 //clasa in care retinem daca utilizatorul este sau nu autentificat + metodele de login, logout, sign up
 class AuthProvider {
 
@@ -31,7 +31,10 @@ class AuthProvider {
     }
 
     authServerRequest = async (user : User) => {
-        return await axios.post(`${API_URL}/add/`, user.toJsonFormat())
+        return await axios.post(`${API_URL}/login/`, {
+            name: user.name,
+            email: user.email,
+        })
             .then(response => {
                 this._user = response.data;
                 return Promise.resolve(response.data);

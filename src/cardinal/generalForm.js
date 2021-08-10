@@ -101,9 +101,9 @@ export default function GeneralForm({ authProvider }) {
         )
     }
 
-    //If the user is completing the form REQUEST http://localhost:8080/participants/newUser
+    //If the user is completing the form REQUEST http://localhost:8081/participants/newUser
     const register = () => {
-        //Email Validation
+        //Form Validation
         if (!gdpr) {
             alert("Pentru a te înregistra avem nevoie de acordul tău pentru prelucrarea datelor cu caracter personal.");
         }
