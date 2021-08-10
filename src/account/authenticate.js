@@ -33,6 +33,10 @@ export default function Authenticate({ authProvider }) {
 
     //TODO: Request to server
 
+    const devAuth = () => {
+        authProviderClass.devAuth();
+        history.push('/');
+    }
     const googleAuth = () => {
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
             .then(function() {
@@ -68,7 +72,8 @@ export default function Authenticate({ authProvider }) {
                     {/*<img src={logo} height={70} />*/}
                     <p style={{ fontSize: 30, fontWeight: 'bold' }}>Autentificare</p>
                     <p style={{ fontSize: 20 }}>Pentru a putea folosi aplicația AppMoS ED, conectează-te te rog cu <b>contul tău de G Suite</b></p>
-                    <Button variant={"contained"} className={classes.button} onClick={() => googleAuth()}>Autentificare</Button>
+                    {/* <Button variant={"contained"} className={classes.button} onClick={() => googleAuth()}>Autentificare</Button> */}
+                    <Button variant={"contained"} className={classes.button} onClick={() => devAuth()}>Autentificare</Button>
                 </Paper>
             </center>
         </div>

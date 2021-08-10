@@ -48,7 +48,7 @@ export default function MonthSelect({ updateMonth, updateYear }) {
     //array-ul rezultat va fi folosit in meniul de selectare al anului
     const generateYears = () => {
         let yearArray = [];
-        for (var i = 2019; i <= 2021; i ++) {
+        for (var i = 2019; i <= 2030; i ++) {
             yearArray.push(i);
         }
         setYears(yearArray);

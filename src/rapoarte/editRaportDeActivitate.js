@@ -23,7 +23,7 @@ export default class EditareRaport extends React.Component {
             editable: false,
             submitted: false,
         }
-        this.data = [[new ReportField()], [new ReportField()]];//toate activitatile aferente postului
+        this.data = [[new ReportField("", "", "", "", this.formatDate(new Date), 0, 0)], [new ReportField("", "", "", "", this.formatDate(new Date), 0, 1)]];//toate activitatile aferente postului
         this.report = null;
         // this.update = setInterval(() => {
         //     if (this.state.newChange) {
@@ -45,21 +45,21 @@ export default class EditareRaport extends React.Component {
 
     updateReportDb = () => {
         this.setState({submitted: true});
-        ReportOperations.addActivity(this.data)
+        ReportOperations.addActivity(this.data, this.state.month, this.state.year)
                 .then(response => {
                     this.data = [[], []];
-                    response.data.map((act,index) => {
+                    response.map((act,index) => {
                         this.data[parseInt(act.type)].push(new ReportField(
                             act.id,
-                            act.report_id,
-                            act.user_id,
+                            act.reportId,
                             act.name,
                             act.project,
-                            act.date.length > 0 ? act.date : "2020-01-01",
-                            parseInt(act.time),
+                            act.date.length > 0 ? act.date : this.formatDate(new Date()),
+                            act.time,
                             parseInt(act.type)
                         ));
-                    })
+                    });
+                    this.setState({newChange: !this.state.newChange});
                 })
                 .catch(error => console.log(error));
     }
@@ -71,34 +71,37 @@ export default class EditareRaport extends React.Component {
         }
     }
 
+
     getDbData = (month, year) => {
         if (month !== -1 && year !== -1) {
-            ReportOperations.getReports(month, year)
+            this.data = [[], []];
+            console.log(authProvider.getUser().id);
+            ReportOperations.getReportActivities(month, year)
                 .then(async response => {
-                    if (response.data.hasOwnProperty("report")) {
-                        this.report = response.data.report;
-                    }
-                    if (response.data !== null && response.data.hasOwnProperty("activities") && response.data.activities.length > 0) {
-                        this.data = [[], []];
-                        await response.data.activities.map(act => {
+                    console.log(response);
+                    if (response.length > 0) {
+                        this.report = response[0].reportId;
+                        await response.map(act => {
+                            console.log(act);
                             this.data[parseInt(act.type)].push(new ReportField(
                                 act.id,
-                                act.report_id,
-                                act.user_id,
+                                act.reportId,
                                 act.name,
                                 act.project,
-                                act.date.length > 0 ? act.date : "2020-01-01",
-                                parseInt(act.time),
-                                parseInt(act.type)
-                            ));
-                        });
+                                act.date.length > 0 ? act.date : this.formatDate(new Date()),
+                                act.time,
+                                act.type
+                            ))
+                        })
                     }
                     else {
-                        this.data = [[new ReportField("", this.report.id, authProvider.getUser().id)], [new ReportField("", this.report.id, authProvider.getUser().id, "", "", "", 0, 1)]];
+                        this.data = [[new ReportField()], [new ReportField()]];
                     }
-                    this.setState({ newChange: !this.state.newChange })
+                    this.setState({newChange: !this.state.newChange});
                 })
-                .catch(error => console.error(error));
+                .catch(error => {
+                    console.error(error);
+                })
         }
     }
 
@@ -141,14 +144,19 @@ export default class EditareRaport extends React.Component {
     }
 
     deleteItem = (index, type) => {
-        ReportOperations.deleteField(this.data[type][index].id)
+        console.log(index);
+        console.log(type);
+        if (this.data[type][index].id.length > 0) {
+            ReportOperations.deleteField(this.data[type][index].id)
             .then(() => {
-                this.data[type].splice(index, 1);
-                this.setState({ newChange: true });
+                
             })
             .catch(error => {
                 console.log(error);
             })
+        }
+        this.data[type].splice(index, 1);
+        this.setState({ newChange: true });
         // this.state.data[type].remove(index) sau ceva de genul asta
     }
 
@@ -174,9 +182,23 @@ export default class EditareRaport extends React.Component {
         )
     }
 
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
+    }
+
     //Functia apelata cand se apasa butonul de adaugare activitate la activitati
     addNewField = (type) => {
-        this.data[type].push(new ReportField("", this.report.id, authProvider.getUser().id, "", "", "2021-01-01", 0, type));
+        this.data[type].push(new ReportField("", this.report, "", "", this.formatDate(new Date()), 0, type ));
         this.setState({ newChange: true, submitted: false });
     }
 

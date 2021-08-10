@@ -4,8 +4,7 @@
 class ReportField {
 
     public id:String = "";
-    public report_id : String = "";
-    public user_id : String = "";
+    public reportId : String = "";
     public name : String = "";
     public project : String = "";
     public date : String = "";
@@ -13,22 +12,21 @@ class ReportField {
     public type : Number = 0;
 
     constructor(id?:String|any, 
-            report_id?:String|any, 
-            user_id?:String|any, 
+            reportId?:String|any, 
             name?:String|any, 
             project?:String|any, 
             date?:String|any, 
-            time?:Number|any, 
+            time?:String|any, 
             type?:Number|any) {
         this.id = id !== undefined ? id : "";
-        this.report_id = report_id !== undefined ? report_id : "";
-        this.user_id = user_id !== undefined ? user_id : "";
+        this.reportId = reportId !== undefined ? reportId : "";
         this.name = name !== undefined ? name : "";
         this.project = project !== undefined ? project : "";
-        this.date = date !== undefined ? date : "2021-01-01";
-        this.time = time !== undefined ? time : 0;
+        this.date = date !== undefined ? date : this.formatDate(new Date());
+        this.time = time !== undefined ? time : 15;
         this.type = type !== undefined ? type : 0;
     }
+    
 
     //Setters
     setName(name:String) {
@@ -45,6 +43,20 @@ class ReportField {
 
     setTime(time:Number) {
         this.time = time;
+    }
+
+    formatDate(date:Date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
     }
 
     //Pentru request-uri de tip PUT, avem nevoie de o formatare cu tot cu ID
