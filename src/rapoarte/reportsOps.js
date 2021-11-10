@@ -9,7 +9,7 @@ import authProvider from '../account/authProvider';
 
 */
 
-const API_URL = "http://localhost:8081/activities/";
+const API_URL = "http://localhost:8081/activities";
 // const API_URL = "https://api.amosed.ro/api/reports/";
 export default class ReportOperations {
 
@@ -28,7 +28,7 @@ export default class ReportOperations {
                 activities.push(act);
             }
         });
-        console.log(activities);
+        // console.log(activities);
         return await fetch(`${API_URL}/updateReport/`, {
             method: "POST",
             body: JSON.stringify({
@@ -74,8 +74,9 @@ export default class ReportOperations {
     }
 
     static async getReportActivities(month, year) {
-        console.log(month);
+        // console.log(month);
         const userId = authProvider.getUser().id;
+        // console.log(userId);
         return await fetch(`${API_URL}/reportActivities/`, {
             method: "POST",
             body: JSON.stringify({

@@ -23,7 +23,10 @@ export default class EditareRaport extends React.Component {
             editable: false,
             submitted: false,
         }
-        this.data = [[new ReportField("", "", "", "", this.formatDate(new Date), 0, 0)], [new ReportField("", "", "", "", this.formatDate(new Date), 0, 1)]];//toate activitatile aferente postului
+        this.data = [
+            [new ReportField("", "", "", "", this.formatDate(new Date), 0, 0)], 
+            [new ReportField("", "", "", "", this.formatDate(new Date), 0, 1)]
+        ];//toate activitatile aferente postului
         this.report = null;
         // this.update = setInterval(() => {
         //     if (this.state.newChange) {
@@ -75,10 +78,10 @@ export default class EditareRaport extends React.Component {
     getDbData = (month, year) => {
         if (month !== -1 && year !== -1) {
             this.data = [[], []];
-            console.log(authProvider.getUser().id);
+            // console.log(authProvider.getUser().id);
             ReportOperations.getReportActivities(month, year)
                 .then(async response => {
-                    console.log(response);
+                    // console.log(response);
                     if (response.length > 0) {
                         this.report = response[0].reportId;
                         await response.map(act => {
@@ -90,12 +93,15 @@ export default class EditareRaport extends React.Component {
                                 act.project,
                                 act.date.length > 0 ? act.date : this.formatDate(new Date()),
                                 act.time,
-                                act.type
+                                parseInt(act.type),
                             ))
                         })
                     }
                     else {
-                        this.data = [[new ReportField()], [new ReportField()]];
+                        this.data = [
+                            [new ReportField("", "", "", "", this.formatDate(new Date), 0, 0)], 
+                            [new ReportField("", "", "", "", this.formatDate(new Date), 0, 1)]
+                        ];
                     }
                     this.setState({newChange: !this.state.newChange});
                 })
@@ -219,6 +225,7 @@ export default class EditareRaport extends React.Component {
     }
 
     render() {
+        // console.log(authProvider.getUser());
         return (
             <center>
                 <div style={{ width: '80%' }}>

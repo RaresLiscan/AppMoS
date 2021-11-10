@@ -73,7 +73,7 @@ export default function Authenticate({ authProvider }) {
                     <p style={{ fontSize: 30, fontWeight: 'bold' }}>Autentificare</p>
                     <p style={{ fontSize: 20 }}>Pentru a putea folosi aplicația AppMoS ED, conectează-te te rog cu <b>contul tău de G Suite</b></p>
                     {/* <Button variant={"contained"} className={classes.button} onClick={() => googleAuth()}>Autentificare</Button> */}
-                    <Button variant={"contained"} className={classes.button} onClick={() => devAuth()}>Autentificare</Button>
+                    <Button variant={"contained"} className={classes.button} onClick={() => googleAuth()}>Autentificare</Button>
                 </Paper>
             </center>
         </div>

@@ -24,18 +24,18 @@ class AuthProvider {
         return this._user;
     }
 
-    devAuth = () => {
-        this._user = {
-            "id": "7d07fe19-7ad0-4a5e-911e-2ed73048a2d8",
-            "name": "Rares",
-            "email": "liscanrares@amosed.ro",
-            "activity_time": 0,
-            "work_time": 0,
-            "createdAt": "2021-07-21",
-            "updatedAt": "2021-07-21"
-        }
-        this._authenticated = true;
-    }
+    // devAuth = () => {
+    //     this._user = {
+    //         "id": "7d07fe19-7ad0-4a5e-911e-2ed73048a2d8",
+    //         "name": "Rares",
+    //         "email": "liscanrares@amosed.ro",
+    //         "activity_time": 0,
+    //         "work_time": 0,
+    //         "createdAt": "2021-07-21",
+    //         "updatedAt": "2021-07-21"
+    //     }
+    //     this._authenticated = true;
+    // }
 
     login = (user : User) => {
         this._user = user;
@@ -49,6 +49,7 @@ class AuthProvider {
             email: user.email,
         })
             .then(response => {
+                console.log(response.data);
                 this._user = response.data;
                 return Promise.resolve(response.data);
             })
