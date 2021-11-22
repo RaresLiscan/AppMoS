@@ -31,7 +31,6 @@ export default function Home() {
 
     const classes = useStyles();
     return (
-        //TODO: navigare catre acele pagini
         <div>
             <h1 style={{textAlign: 'center', color: 'white'}}>AppMoS</h1>
             <Grid container spacing={0}>

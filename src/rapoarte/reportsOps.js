@@ -3,12 +3,6 @@ import authProvider from '../account/authProvider';
 
 //Clasa asta contine metode statice prin care facem request-uri catre baza de date
 
-/*
-    TODO 1: Request la /activities/ cu un array continand obiecte de tip ReportField
-    TODO 2: La report fields trebuie setat fiecare report_id si user_id
-
-*/
-
 const API_URL = "http://localhost:8081/activities";
 // const API_URL = "https://api.amosed.ro/api/reports/";
 export default class ReportOperations {
@@ -17,8 +11,6 @@ export default class ReportOperations {
         const userId = authProvider.getUser().id;
         const activities = [];
         data[0].map(act => {
-            console.log(act);
-            console.log(parseInt(act.time)>0);
             if (act.name.length > 0 && act.project.length > 0 && parseInt(act.time) > 0) {
                 activities.push(act);
             }
@@ -28,7 +20,6 @@ export default class ReportOperations {
                 activities.push(act);
             }
         });
-        // console.log(activities);
         return await fetch(`${API_URL}/updateReport/`, {
             method: "POST",
             body: JSON.stringify({
@@ -43,23 +34,12 @@ export default class ReportOperations {
         })
             .then(response => response.json())
             .then(res => {
-                console.log(res);
                 return res;
             })
             .catch(error => {
                 console.error(error);
             })
 
-        // console.log(JSON.stringify(data[0].concat(data[1])));
-        // console.log(data[0]);
-        // console.log(data[1]);
-
-        // const REQUEST_URL = API_URL + `activities/`;
-        // return await axios.post(REQUEST_URL, JSON.stringify(data[0].concat(data[1])))
-        //     .then(response => {
-        //         return response;
-        //     })
-        //     .catch(error => console.error(error));
     }
 
     static deleteField = async (id) => {
@@ -74,9 +54,7 @@ export default class ReportOperations {
     }
 
     static async getReportActivities(month, year) {
-        // console.log(month);
         const userId = authProvider.getUser().id;
-        // console.log(userId);
         return await fetch(`${API_URL}/reportActivities/`, {
             method: "POST",
             body: JSON.stringify({
@@ -90,7 +68,6 @@ export default class ReportOperations {
         })
             .then(response => response.json())
             .then(resJson => {
-                console.log(resJson);
                 return resJson;
             })
             .catch(error => {

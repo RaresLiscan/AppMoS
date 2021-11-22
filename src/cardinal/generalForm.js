@@ -52,7 +52,6 @@ export default function GeneralForm({ authProvider }) {
             await fetch(`${API_URL}/projects/register/${id}`)
                 .then(res => res.json())
                 .then(response => {
-                    console.log(response);
                     setProject(response);
                 })
                 .catch(error => {
@@ -63,7 +62,6 @@ export default function GeneralForm({ authProvider }) {
             await fetch(`${API_URL}/projects/${id}`) 
                 .then(res => res.json())
                 .then(response => {
-                    console.log(response);
                     setProject(response);
                 })
                 .catch(error => {
@@ -115,7 +113,6 @@ export default function GeneralForm({ authProvider }) {
                 gdpr: gdpr,
                 name: name
             };
-            console.log(requestBody);
             axios.post(`${API_URL}/participants/newUser`, JSON.stringify(requestBody), {headers: {
                 "Content-Type": "application/json"
             }})
@@ -150,9 +147,6 @@ export default function GeneralForm({ authProvider }) {
                             "Content-Type": "application/json"
                         }
                     })
-                        .then(response => {
-                            console.log(response);
-                        })
                         .catch(error => {
                             console.error(error);
                         })

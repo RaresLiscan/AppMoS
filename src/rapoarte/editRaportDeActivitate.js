@@ -78,14 +78,11 @@ export default class EditareRaport extends React.Component {
     getDbData = (month, year) => {
         if (month !== -1 && year !== -1) {
             this.data = [[], []];
-            // console.log(authProvider.getUser().id);
             ReportOperations.getReportActivities(month, year)
                 .then(async response => {
-                    // console.log(response);
                     if (response.length > 0) {
                         this.report = response[0].reportId;
                         await response.map(act => {
-                            console.log(act);
                             this.data[parseInt(act.type)].push(new ReportField(
                                 act.id,
                                 act.reportId,
@@ -150,8 +147,6 @@ export default class EditareRaport extends React.Component {
     }
 
     deleteItem = (index, type) => {
-        console.log(index);
-        console.log(type);
         if (this.data[type][index].id.length > 0) {
             ReportOperations.deleteField(this.data[type][index].id)
             .then(() => {
@@ -225,7 +220,6 @@ export default class EditareRaport extends React.Component {
     }
 
     render() {
-        // console.log(authProvider.getUser());
         return (
             <center>
                 <div style={{ width: '80%' }}>

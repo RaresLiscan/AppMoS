@@ -49,9 +49,9 @@ function App() {
 
     const updateUser = async (email, name) => {
         const userModel = new User(name, email);
-        await authProviderClass.authServerRequest(userModel)
+        await authProviderClass.getUserFromDb(userModel)
             .then(user => {
-                authProviderClass.setUserState(user, true);
+                authProviderClass.setUserState(user.data[0], true);
             })
             .catch(error => console.log(error));
 
@@ -69,11 +69,6 @@ function App() {
     useEffect(() => {
         if (!init) {
             initFirebase();
-            // var authProvider = new firebase.auth.GoogleAuthProvider();
-            // authProvider.setCustomParameters({
-            //     'login_hint': 'user@amosed.ro',
-            //     'hd': 'amosed.ro',
-            // })
             setAuthProvider(new firebase.auth.GoogleAuthProvider());
             setInit(true);
             checkUserSession();
@@ -109,8 +104,6 @@ function App() {
                         <Route path={"/login"} exact>
                             <Authenticate authProvider={provider}/>
                         </Route>
-
-                        {/*<Route path="/:activityId" component={Registration} exact/>*/}
 
                         <ProtectedRoute>
                             <Home/>

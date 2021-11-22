@@ -43,17 +43,26 @@ class AuthProvider {
         return this.authServerRequest(user);
     }
 
+    getUserFromDb = async (user : User) => {
+        return await axios.get(`${API_URL}/get/${user.email}`)
+            .then(response => {
+                return response;
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+
     authServerRequest = async (user : User) => {
-        return await axios.post(`${API_URL}/login/`, {
+        const newUser = await axios.post(`${API_URL}/login/`, {
             name: user.name,
             email: user.email,
         })
             .then(response => {
-                console.log(response.data);
-                this._user = response.data;
                 return Promise.resolve(response.data);
             })
             .catch(error => {
+                console.error(error);
                 return Promise.reject(error);
             });
     }

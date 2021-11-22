@@ -37,17 +37,18 @@ export default function Authenticate({ authProvider }) {
         authProviderClass.devAuth();
         history.push('/');
     }
-    const googleAuth = () => {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-            .then(function() {
-                return firebase.auth().signInWithPopup(authProvider).then(function (result) {
+    const googleAuth = async () => {
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(async function() {
+                return await firebase.auth().signInWithPopup(authProvider).then(async function (result) {
                     // This gives you a Google Access Token. You can use it to access the Google API.
                     // var token = result.credential.accessToken;
                     // The signed-in user info.
                     var user = result.user;
+                    
                     //TODO: server request with the data to register user in SQL
                     const userModel = new User(user.displayName, user.email);
-                    authProviderClass.login(userModel)
+                    await authProviderClass.login(userModel)
                         .then(response => {
                             history.push('/');
                         })

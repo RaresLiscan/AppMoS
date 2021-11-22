@@ -40,17 +40,11 @@ export default function Menu() {
         <div className={classes.root}>
             <AppBar position="static" className={classes.white}>
                 <Toolbar>
-                    {/*<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => openDrawer()}>*/}
-                    {/*    <MenuIcon />*/}
-                    {/*</IconButton>*/}
                     <Typography variant="h6" className={classes.title}>
-                    {/*<Hidden xsDown>*/}
                         <Link to={"/"} style={{display: 'flex', alignItems: 'center'}}>
                             <img src={logo} height={50} />
                         </Link>
-                    {/*</Hidden>*/}
                     </Typography>
-                    {/*<Button color="inherit">Login</Button>*/}
                 </Toolbar>
             </AppBar>
         </div>

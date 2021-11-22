@@ -75,7 +75,6 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
     }
 
     const updateDate = (date) => {
-        // const newDate = date.substring(6, 10) + "-" + date.substring(3, 5) + "-" + date.substring(0, 2);
         field.setDate(date);
         onChangeFields(field, index, type);
         setUpdate(!update);
@@ -129,26 +128,9 @@ export default function FormFields({ onChangeFields, field, index, type, editabl
                             defaultValue="2021-01-01"
                             disabled={!editable}
                             value={field.date}
-                            // formatDate={date => moment(date).format('DD/MM/YYYY')}
                             onChange={event => updateDate(event.target.value)}
                             className={classes.dateField}
-                            // InputLabelProps={{
-                            //     shrink: true,
-                            //     // placeholder: "dd/mm/yyyy",
-                            // }}
                         />
-                        {/*<div className={classes.picker}>*/}
-                        {/*    <KeyboardDatePicker*/}
-                        {/*        // clearable*/}
-                        {/*        value={field.date}*/}
-                        {/*        placeholder="dd/MM/YYYY"*/}
-                        {/*        onChange={(date, value) => updateDate(value)}*/}
-                        {/*        format="dd/MM/yyyy"*/}
-                        {/*        variant={"inline"}*/}
-                        {/*        // TextFieldComponent={FormTextField}*/}
-                        {/*        // className={classes.picker}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
                     </Grid>
                     <Grid item xs={12} md={2}>
                         <TextField
