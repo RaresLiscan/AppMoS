@@ -3,7 +3,7 @@ import authProvider from '../account/authProvider';
 
 //Clasa asta contine metode statice prin care facem request-uri catre baza de date
 
-const API_URL = "http://localhost:8081/activities";
+const API_URL = "https://api.davinci.fun/appmos-server/activities";
 // const API_URL = "https://api.amosed.ro/api/reports/";
 export default class ReportOperations {
 

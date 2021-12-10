@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     }
 })
 
-const API_URL = "http://localhost:8081";
+const API_URL = "https://api.davinci.fun/appmos-server";
 
 export default function GeneralForm({ authProvider }) {
 
@@ -99,7 +99,7 @@ export default function GeneralForm({ authProvider }) {
         )
     }
 
-    //If the user is completing the form REQUEST http://localhost:8081/participants/newUser
+    //If the user is completing the form REQUEST https://api.davinci.fun/appmos-server/participants/newUser
     const register = () => {
         //Form Validation
         if (!gdpr) {
@@ -129,7 +129,7 @@ export default function GeneralForm({ authProvider }) {
         }
     }
 
-    //With google login, REQUEST http://localhost:8080/participants/moseador
+    //With google login, REQUEST https://api.davinci.fun/appmos-server/participants/moseador
     const googleLogin = () => {
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
             .then(function() {
