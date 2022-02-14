@@ -28,22 +28,11 @@ export default class EditareRaport extends React.Component {
             [new ReportField("", "", "", "", this.formatDate(new Date), 0, 1)]
         ];//toate activitatile aferente postului
         this.report = null;
-        // this.update = setInterval(() => {
-        //     if (this.state.newChange) {
-        //         this.updateUserReport();
-        //         this.setState({newChange: false});
-        //     }
-        // }, 5000);
     }
 
     downloadPdf = () => {
         this.updateReportDb();
         generatePDF(this.data[0], this.data[1], authProvider.getUser().name, this.state.month);
-    }
-
-    componentWillUnmount() {
-        // this.updateUserReport();
-        // clearInterval(this.update);
     }
 
     updateReportDb = () => {
@@ -109,16 +98,17 @@ export default class EditareRaport extends React.Component {
     }
 
     checkIfEditable = (month, year) => {
-        const today = new Date();
-        const reportDate = new Date(year, month, 1);
-        const diffTime = Math.abs(today - reportDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        if (diffDays > COMPLETION_DAYS || diffTime < 0) {
-            this.setState({ editable: false });
-        }
-        else {
-            this.setState({ editable: true });
-        }
+        // const today = new Date();
+        // const reportDate = new Date(year, month, 1);
+        // const diffTime = Math.abs(today - reportDate);
+        // const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        this.setState({ editable: true });
+        // if (diffDays > COMPLETION_DAYS || diffTime < 0) {
+        //     this.setState({ editable: false });
+        // }
+        // else {
+        //     this.setState({ editable: true });
+        // }
     }
 
     updateMonth = (month) => {

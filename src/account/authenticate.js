@@ -7,7 +7,6 @@ import { Button } from "@material-ui/core";
 import { colors } from "../colors";
 import { useHistory } from 'react-router-dom';
 import User from './user.model';
-import axios from 'axios';
 
 const useStyles = makeStyles({
     paper: {

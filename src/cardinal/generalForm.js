@@ -35,6 +35,7 @@ const useStyles = makeStyles({
 })
 
 const API_URL = "https://api.davinci.fun/appmos-server";
+// const API_URL = "http://localhost:8081"
 
 export default function GeneralForm({ authProvider }) {
 

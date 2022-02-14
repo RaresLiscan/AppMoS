@@ -3,6 +3,7 @@ import User from './user.model';
 import axios from 'axios';
 
 const API_URL = "https://api.davinci.fun/appmos-server/users";
+// const API_URL = "http://localhost:8081/users"
 //clasa in care retinem daca utilizatorul este sau nu autentificat + metodele de login, logout, sign up
 class AuthProvider {
 
